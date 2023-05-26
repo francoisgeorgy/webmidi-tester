@@ -1,0 +1,47 @@
+html {
+    font-family: sans-serif;
+    font-size: large;
+}
+body {
+    margin: 0;
+    padding: 3rem;
+}
+header {
+    position: relative;
+}
+h1 {
+    margin-top: 0;
+}
+#about {
+    position: absolute;
+    right: 0;
+    bottom: 0.2rem;
+}
+.hide {
+    display: none;
+}
+#support {
+    font-size: larger;
+    margin: 2rem 0;
+}
+div.infos > div {
+    margin: 0.5rem 0;
+}
+ul > li {
+    margin-bottom: 0.5rem;
+}
+#messages {
+    font-family: monospace;
+}
+.success {
+    color: green;
+}
+.failure {
+    color: red;
+}
+.light {
+    color: gray;
+}
+.bold {
+    font-weight: bold;
+}

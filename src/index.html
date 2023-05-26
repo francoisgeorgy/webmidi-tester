@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>WebMIDI integration with jQuery - by francoisgeorgy.ch</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="https://francoisgeorgy.ch/">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header>
+        <div id="about">
+            Made by <a href="https://francoisgeorgy.ch/">François Georgy</a>
+        </div>
+        <h1>WebMIDI integration example with jQuery</h1>
+    </header>
+    <main>
+        <div id="support" class="infos"></div>
+        <div id="details" class="hide">
+            <h3>Inputs:</h3>
+            <div id="inputs" class="infos"></div>
+            <h3>Outputs:</h3>
+            <div id="outputs" class="infos"></div>
+            <h3>MIDI messages:</h3>
+            <div class="light">If you have a MIDI controller connected, any message sent by this controller will be listed here.</div>
+            <div id="messages" class=""></div>
+        </div>
+    </main>
+</body>
+</html>
