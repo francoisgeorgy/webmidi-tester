@@ -7,21 +7,75 @@
  */
 var MIDI = null;
 
-function padZero(str, len, char) {
-    let s = "";
-    let c = char || "0";
-    let n = (len || 2) - str.length;
-    while (s.length < n) s += c;
-    return s + str;
+
+//=============================================================================
+//
+//-----------------------------------------------------------------------------
+
+
+
+
+//=============================================================================
+//
+//-----------------------------------------------------------------------------
+
+
+
+
+//=============================================================================
+// Events and Messages
+//-----------------------------------------------------------------------------
+
+const time0 = Date.now();
+
+// const log = [];
+
+const EVENT_API = 0;
+const EVENT_MESSAGE = 1;
+const DIRECTION_IN = 0;
+const DIRECTION_OUT = 1;
+
+function printEvent(description) {
+    // log.push({type: EVENT_API, description: "WedMIDI: " + description, timestamp: Date.now() - time0})
+    let cls = null;
+    document
+        .getElementById("logentries")
+        .insertAdjacentHTML("beforeend", "<div class='" + (cls || "") + "'>" + description + "</div>");
 }
 
-function h(v) {
-    return (v === null || v === undefined) ? "" : padZero(v.toString(16).toUpperCase(), 2);
+function logEvent(description) {
+    console.log("logEvent", description);
+    // print({type: EVENT_API, description: "WedMIDI: " + description, timestamp: Date.now() - time0})
+    printEvent("WedMIDI: " + description);
+    // let cls = null;
+    // document
+    //     .getElementById("logentries")
+    //     .insertAdjacentHTML("beforeend", "<div class='" + (cls || "") + "'>" + description + "</div>");
 }
 
-function hs(data) {
-    return (data === null || data === undefined) ? "" : (Array.from(data).map(h)).join(" ");
+function logMessageIn(description) {
+    console.log("logEvent", description);
+    printEvent("receive: " + description);
+    // log.push({
+    //     type: EVENT_MESSAGE,
+    //     timestamp: Date.now() - time0,
+    //     description: "receive: " + description,
+    //     direction: DIRECTION_IN
+    // })
 }
+
+// function displayEventsAndMessages() {
+//     container = $("logentries");
+//     document.getElementById(where).insertAdjacentHTML(reverse ? "afterbegin" : "beforeend", "<div class='" + (cls || "") + "'>" + what + "</div>");
+// }
+
+//=============================================================================
+//
+//-----------------------------------------------------------------------------
+
+
+
+
 
 function print(what, where, cls, reverse) {
     document.getElementById(where).insertAdjacentHTML(reverse ? "afterbegin" : "beforeend", "<div class='" + (cls || "") + "'>" + what + "</div>");
@@ -89,6 +143,20 @@ function onStateChange(event) {
     listInputsAndOutputs();
 }
 
+
+function test() {
+    if (navigator.requestMIDIAccess) {
+        navigator.requestMIDIAccess({sysex:false}).then(onMIDISuccess, onMIDIFailure);
+    } else {
+        failure("Your browser does not support WebMIDI.");
+        document.getElementById("unsupported").classList.remove('hide');
+    }
+}
+
+//=============================================================================
+// WebMIDI setup
+//-----------------------------------------------------------------------------
+
 function onMIDISuccess(midiAccess) {
     success("Your browser supports WebMIDI.");
     document.getElementById("details").classList.remove('hide');
@@ -103,14 +171,9 @@ function onMIDIFailure(msg) {
     failure("Access to WebMIDI is denied. Check your browser settings.")
 }
 
-function test() {
-    if (navigator.requestMIDIAccess) {
-        navigator.requestMIDIAccess({sysex:false}).then(onMIDISuccess, onMIDIFailure);
-    } else {
-        failure("Your browser does not support WebMIDI.");
-        document.getElementById("unsupported").classList.remove('hide');
-    }
-}
+//=============================================================================
+// Bootstrap
+//-----------------------------------------------------------------------------
 
 function whenReadyDo(callback) {
     if (document.readyState !== "loading") {
@@ -121,3 +184,24 @@ function whenReadyDo(callback) {
 }
 
 whenReadyDo(test);
+
+//=============================================================================
+// UTILS
+//-----------------------------------------------------------------------------
+
+function padZero(str, len, char) {
+    let s = "";
+    let c = char || "0";
+    let n = (len || 2) - str.length;
+    while (s.length < n) s += c;
+    return s + str;
+}
+
+function h(v) {
+    return (v === null || v === undefined) ? "" : padZero(v.toString(16).toUpperCase(), 2);
+}
+
+function hs(data) {
+    return (data === null || data === undefined) ? "" : (Array.from(data).map(h)).join(" ");
+}
+

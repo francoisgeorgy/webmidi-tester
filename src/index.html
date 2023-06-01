@@ -14,12 +14,16 @@
 </head>
 <body>
     <header>
-        <div id="about">
-            Made by <a href="https://francoisgeorgy.ch/">François Georgy</a>
+        <div class="title">
+            WebMIDI Lab
         </div>
-        <h1>WebMIDI integration example with jQuery</h1>
+        <div class="grow align-end mr-10">
+            v0.1 by <a href="https://studiocode.dev/" target="_blank" rel="noopener noreferrer">StudioCode.dev</a>
+        </div>
+<!--        <Switch onChange={toggleTheme} checked={theme === NIGHT_THEME} height={18} width={36}-->
     </header>
     <main>
+<!--
         <div id="support" class="infos"></div>
         <div id="details" class="hide">
             <h3>Inputs:</h3>
@@ -30,6 +34,25 @@
             <div class="light">If you have a MIDI controller connected, any message sent by this controller will be listed here.</div>
             <div id="messages" class=""></div>
         </div>
+-->
+        <div class="ports">
+            <div>
+                <span>Listen from :</span>
+                <div id="inputs" class="infos"></div>
+            </div>
+            <div>
+                <span>Send to :</span>
+                <div id="outputs" class="infos"></div>
+            </div>
+        </div>
+        <div class="tools">
+        </div>
     </main>
+    <div class="messages">
+        <h2>Events and Messages</h2>
+        <div id="logentries">
+            <div id="end-of-list"></div>
+        </div>
+    </div>
 </body>
 </html>
