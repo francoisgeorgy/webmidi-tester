@@ -13,6 +13,7 @@ CDN :
 
 ## JSDoc + Typescript
 
+- https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
 - https://wojciechkrysiak.medium.com/typescript-jsdoc-better-docs-7c03b6ea04df
 - https://usecsv.com/community/javascript-jsdoc
 

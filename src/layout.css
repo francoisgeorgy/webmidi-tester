@@ -16,6 +16,8 @@ body, html {
 header {
     padding: 5px 20px;
     background-color: #c0c0c0;
+    display: flex;
+    justify-content: space-between;
 }
 
 main {
@@ -24,6 +26,10 @@ main {
     background-color: var(--main-bg-color);
     /*display: flex;*/
     /*flex-direction: row;*/
+}
+
+.block-title {
+    padding: 0 20px;
 }
 
 .ports {
@@ -42,14 +48,20 @@ main {
     width: 30%;
 }
 
+.bottom {
+}
+
 .messages {
-    padding: 0 20px;
-    background-color: var(--messages-bg-color);
-    height: 60%;
+    border-top: 1px solid black;
+    /*padding: 0 20px;*/
+    margin: 0 20px;
+    height:50%;
     overflow-y: auto;
+    background-color: var(--messages-bg-color);
 }
 
 #logentries {
+    padding: 5px 0 0 0;
     font-family: monospace;
 }
 

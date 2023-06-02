@@ -39,43 +39,81 @@
 -->
         <div class="ports">
             <div>
-                <span>Send to :</span>
+                <span class="bold">Outputs :</span>
                 <div id="outputs" class="infos"></div>
             </div>
             <div class="ml-20">
-                <span>Listen from :</span>
+                <span class="bold">Inputs :</span>
                 <div id="inputs" class="infos"></div>
             </div>
         </div>
         <div class="tools">
-            <h2>Channel Voice messages</h2>
-            <h2>Channel Mode messages</h2>
-            <h2>System Real-Time messages</h2>
-            <h2>System Common messages</h2>
-            <h2>System Exclusive messages</h2>
+<!--            <h2>Channel Voice messages</h2>-->
+<!--            <h2>Channel Mode messages</h2>-->
+<!--            <h2>System Real-Time messages</h2>-->
+<!--            <h2>System Common messages</h2>-->
+<!--            <h2>System Exclusive messages</h2>-->
+            <span class="bold">Send messages to selected outputs :</span>
             <div>
-                <button>Send Device Identity Request</button>
+                <label>Device Identity Request</label>
+                <button>Send</button>
+            </div>
+            <div id="send-pc-block">
+                <label>PC</label>
+                channel <select class="data-ch">
+                    <option value="0">1</option>
+                    <option value="1">2</option>
+                    <option value="2">3</option>
+                </select>
+                <input type="text" class="data1" />
+                <button title="send a Program Change message" class="btSend">Send</button>
             </div>
             <div>
-                <button title="send a Program Change message">Send PC</button>
-                <input type="text "/>
+                <label>CC</label>
+                channel <select class="data-ch">
+                    <option value="0">1</option>
+                    <option value="1">2</option>
+                    <option value="2">3</option>
+                </select>
+                <input type="text" class="data1" /> <input type="text" class="data2" />
+                <button title="send a Continuous Controller message" class="btSend">Send</button>
             </div>
             <div>
-                <button title="send a Continuous Controller message">Send CC</button>
-                <input type="text "/><input type="text "/>
+                <label>NRPN</label>
+                channel <select></select> <input type="text"/> <input type="text"/><input type="text"/><input type="text"/>
+                <button title="send a Non-Registered Parameter Number message"  class="btSend">Send</button>
             </div>
             <div>
-                <button title="send a Non-Registered Parameter Number message">Send NRPN</button>
-                <input type="text "/><input type="text "/><input type="text "/><input type="text "/>
+                <label>Note Off</label>
+                channel <select></select> note:<input type="text"/> velocity:
+                <button title="send a Note OFF message"  class="btSend">Send</button>
             </div>
             <div>
-                <button title="send a Note ON or Note OFF message">Send Note ON|OFF</button>
-                <input type="text "/><input type="text "/>
+                <label>Note On</label>
+                channel <select></select> note:<input type="text"/> velocity:
+                <button title="send a Note ON message"  class="btSend">Send</button>
+            </div>
+            <div>
+                <label>SysEx</label>
+                <input type="text"/>
+                <button title="send a Note ON or Note OFF message"  class="btSend">Send</button>
+            </div>
+            <div>
+                <label>Arbitrary message</label>
+                <input type="text"/>   <button title="send an arbitrary message"  class="btSend">Send</button>
+                <div>
+                <input type="checkbox" /> restrict values to 0..127.
+                </div>
             </div>
         </div>
+        <div>
+            You can enter hexadecimal values by prefixing them with '0x' or just 'x'. You can mix dec and hex values in the same message.
+        </div>
     </main>
+    <div class="block-title">
+        <span class="bold">Events and Messages</span> <button id="btClearMessages">clear</button>
+    </div>
     <div class="messages">
-        <h2>Events and Messages</h2>
         <div id="logentries">
         </div>
         <div id="end-of-list"></div>

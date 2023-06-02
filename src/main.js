@@ -21,9 +21,50 @@ var outputs= {};
 
 
 //=============================================================================
-//
+// Messages
 //-----------------------------------------------------------------------------
 
+/**
+ * @param {number[]} data
+ * @returns {Uint8Array}
+ */
+function universalSysex(data) {
+    //TODO: clamp the numbers to 0..255
+    return new Uint8Array([
+        SYSEX_START,
+        ...data,
+        SYSEX_END
+    ]);
+}
+
+
+/**
+ * @param {number[]} data
+ * @param {number[]} manufacturer
+ * @returns {Uint8Array}
+ */
+function sysex(data, manufacturer) {
+    //TODO: clamp the numbers to 0..255
+    return new Uint8Array([
+        SYSEX_START,
+        ...manufacturer,
+        ...data,
+        SYSEX_END
+    ]);
+}
+
+/**
+ *
+ * @param {string} outputId
+ * @returns {void}
+ */
+function sendDeviceIdRequest(outputId) {
+    // this.send(universalSysex(SYSEX_COMMANDS[SYSEX_ID_REQUEST]), outputId);
+}
+
+//=============================================================================
+//
+//-----------------------------------------------------------------------------
 
 /*
 function print(what, where, cls, reverse) {
@@ -52,12 +93,30 @@ function clearContent(elementId) {
 function onClickPortEnable(event) {
     console.log("click on ", event.target.id, event);
     let id = event.target.id.substring("enable-port-".length);
-    inputs[id].enabled = $(`output#${event.target.id}`).is(':checked');
+    console.log("id is", id, outputs);
+    outputs[id].enabled = $(`input#${event.target.id}`).is(':checked');
     console.log(outputs);
+}
+
+function onClickBtSend(event) {
+    // console.log(event);
+    // console.log('id', $( this ).parent().get( 0 ).id);
+    console.log('data-ch', $( this ).siblings('.data-ch').val());
+    console.log('data1', $( this ).siblings('.data1').val());
+    console.log('data2', $( this ).siblings('.data2').val());
+    console.log('data3', $( this ).siblings('.data3').val());
+    send([0x80, 0x3c, 0x00]);
+}
+
+function onClickBtClearMessages() {
+    clearContent("logentries");
 }
 
 function setupUIHandler() {
     $('#outputs').on('click', 'input.port-enable', onClickPortEnable);
+    $('.btSend').on('click', onClickBtSend);
+    $('#btClearMessages').on('click', onClickBtClearMessages);
+
 }
 
 //=============================================================================
@@ -133,6 +192,30 @@ function logError(description) {
 //
 //-----------------------------------------------------------------------------
 
+
+/**
+ *
+ * @param {Uint8Array} data
+ */
+function send(data) {
+    console.log(outputs);
+    for(const id in outputs) {
+        console.log("send to ", id, outputs[id].name);
+        if (!outputs[id].enabled) {
+            console.log(`output port ${id} is disabled; skipping`);
+            continue;
+        }
+        const port = outputById(id);
+        if (port) {
+            console.warn(`output port ${id} found`);
+            channel = 0;
+            logMessageOut("[" + hs(data) + "] Ch." + (channel+1) + " " + port.name)
+            port.send(data);
+        } else {
+            console.warn(`output port ${id} not found`);
+        }
+    }
+}
 
 function listInputsAndOutputs() {
     if (MIDI === null) return;
