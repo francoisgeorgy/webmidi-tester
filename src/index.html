@@ -10,12 +10,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="main.js"></script>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="themes.css">
 </head>
 <body>
     <header>
         <div class="title">
-            WebMIDI Lab
+            WebMIDI Tester
         </div>
         <div class="grow align-end mr-10">
             v0.1 by <a href="https://studiocode.dev/" target="_blank" rel="noopener noreferrer">StudioCode.dev</a>
@@ -37,22 +39,46 @@
 -->
         <div class="ports">
             <div>
-                <span>Listen from :</span>
-                <div id="inputs" class="infos"></div>
-            </div>
-            <div>
                 <span>Send to :</span>
                 <div id="outputs" class="infos"></div>
             </div>
+            <div class="ml-20">
+                <span>Listen from :</span>
+                <div id="inputs" class="infos"></div>
+            </div>
         </div>
         <div class="tools">
+            <h2>Channel Voice messages</h2>
+            <h2>Channel Mode messages</h2>
+            <h2>System Real-Time messages</h2>
+            <h2>System Common messages</h2>
+            <h2>System Exclusive messages</h2>
+            <div>
+                <button>Send Device Identity Request</button>
+            </div>
+            <div>
+                <button title="send a Program Change message">Send PC</button>
+                <input type="text "/>
+            </div>
+            <div>
+                <button title="send a Continuous Controller message">Send CC</button>
+                <input type="text "/><input type="text "/>
+            </div>
+            <div>
+                <button title="send a Non-Registered Parameter Number message">Send NRPN</button>
+                <input type="text "/><input type="text "/><input type="text "/><input type="text "/>
+            </div>
+            <div>
+                <button title="send a Note ON or Note OFF message">Send Note ON|OFF</button>
+                <input type="text "/><input type="text "/>
+            </div>
         </div>
     </main>
     <div class="messages">
         <h2>Events and Messages</h2>
         <div id="logentries">
-            <div id="end-of-list"></div>
         </div>
+        <div id="end-of-list"></div>
     </div>
 </body>
 </html>

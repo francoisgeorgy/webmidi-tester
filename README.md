@@ -20,4 +20,7 @@ import .d.ts
 
     /** @type {import('./twitter.d').ConversationResponse} */
 
+# MIDI
+
+https://www.midi.org/midi-articles/audio-wiki-midi-message-diagram
 

@@ -1,0 +1,96 @@
+/* default is 'light' */
+
+html {
+    color-scheme: light;
+    --main-bg-color: #ffffff;
+    --messages-bg-color: #fff;
+    --events-bg-color: #333;
+    --link: blue;
+    --link-hover: #000;
+    --link-active: #000;
+    --text-primary: #000;
+    --text-secondary: rgba(0, 0, 0, 0.87);
+    --text-disabled: rgba(0, 0, 0, 0.38);
+    --text-light: rgba(0, 0, 0, 0.33);
+    --header-bg: rgba(0, 0, 0, 0.1);
+    --border-light: #ddd;
+    --border-colored: #afafb7;
+    --load-button-bg: #ffff00;
+    --load-button-bg-hover: #efef00;
+    --load-button-text: #000;
+}
+
+html[data-theme='dark'] {
+    color-scheme: dark;
+    --main-bg-color: #272729;
+    --messages-bg-color: #000;
+    --events-bg-color: #222222;
+    --link: #bdb0ff;
+    --link-hover: #ffffff;
+    --link-active: #ffffff;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.75);
+    --text-disabled: rgba(255, 255, 255, 0.66);
+    --text-light: rgba(255, 255, 255, 0.33);
+    --header-bg: #000000;
+    --load-button-bg: #999e4b;
+    --load-button-bg-hover: #8a8d43;
+    --load-button-text: #000;
+}
+
+body {
+    color: var(--text-primary);
+}
+
+html {
+    background-color: var(--main-bg-color); /* because #root element may become larger than body element */
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-light {
+    color: var(--text-light);
+}
+
+.border-top-colored {
+    border-top: 1px solid var(--border-colored);
+}
+
+a {
+    text-decoration: none;
+    color: var(--link);
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+a.active {
+    color: var(--link-active);
+}
+
+header {
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--border-colored);
+}
+
+h3 {
+    color: var(--text-secondary);
+    border-bottom: 1px solid #aaa;
+}
+
+button.extra {
+    font-size: 1rem;
+    background-color: var(--load-button-bg);
+    color: var(--load-button-text);
+    padding: 4px 20px 3px 20px;
+    display: table-cell;
+    vertical-align: middle;
+    border-radius: 5px;
+}
+
+button.extra:hover {
+    background-color: var(--load-button-bg-hover);
+}

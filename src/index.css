@@ -1,0 +1,99 @@
+body {
+  /*margin: 0;*/
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.light {
+  color: gray;
+}
+
+.line140 {
+  line-height: 140%;
+}
+
+.mt-5 {
+  margin-top: 5px;
+}
+
+.mb-5 {
+  margin-bottom: 5px;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.my-10 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.my-20 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.pt-5 {
+  padding-top: 5px;
+}
+
+.pt-10 {
+  padding-top: 10px;
+}
+
+.span-2-cols {
+  grid-column: span 2;
+}
+
+.span-3-cols {
+  grid-column: span 3;
+}
+
+.text-small {
+  font-size: 0.85rem;
+}
+
+.port-name {
+  font-weight: bold;
+}
