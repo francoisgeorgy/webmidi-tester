@@ -33,13 +33,58 @@ main {
 }
 
 .ports {
-    display: flex;
+    /*display: flex;*/
 }
 
 .tools {
     /*padding: 0 20px;*/
-    margin-top: 20px;
+    /*margin-top: 20px;*/
     flex-grow: 2
+}
+
+.messages-groups {
+    display: flex;
+}
+
+.messages-group {
+}
+
+.voice-msg-grid {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    grid-column-gap: 0.5rem;
+    grid-row-gap: 0.25rem;
+    justify-content: start;
+    justify-items: end;
+}
+
+.sysex-msg-grid {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 0.5rem;
+    grid-row-gap: 0.25rem;
+    justify-content: start;
+    justify-items: end;
+}
+
+.grid-col-span-2 {
+    grid-column: span 2;
+}
+
+.justify-start {
+    justify-self: start;
+}
+
+.msg-name {
+    justify-self: start;
+}
+
+input.data {
+    width: 3rem;
+}
+
+input.sysex {
+    width: 40rem;
 }
 
 .events {

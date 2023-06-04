@@ -16,6 +16,14 @@ h1, h2 {
   margin: 0;
 }
 
+label {
+  /*font-weight: bold;*/
+}
+
+.flex-row {
+  display: flex;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -68,6 +76,10 @@ h1, h2 {
 
 .ml-20 {
   margin-left: 20px;
+}
+
+.ml-30 {
+  margin-left: 30px;
 }
 
 .mr-20 {
