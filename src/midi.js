@@ -269,6 +269,7 @@ function outputDebugLabel(id) {
  */
 function onMidiMessage(message) {
     if (message instanceof MIDIMessageEvent) {
+        // console.log(message);
         let bytes = message.data;       // type is Uint8Array
         let channel = bytes[0] & 0x0F;  // MIDI channel
         // let type = bytes[0] & 0xF0;     // MIDI event type

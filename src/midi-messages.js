@@ -24,6 +24,8 @@ const MIDI_MESSAGE = {
 const SYSEX_START = 0xF0;
 const SYSEX_END = 0xF7;
 
+const SYSEX_ID_REQUEST = [0x7E, 0x00, 0x06, 0x01];
+
 const WAIT_BETWEEN_MESSAGES = 50;
 
 const wait = (ms) => new Promise(r => setTimeout(r, ms));
@@ -45,31 +47,36 @@ export function send(messageMode, messageType, channel, data1, data2) {
         }
         sendChannelMessage(channel, MIDI_MESSAGE[messageMode][messageType], data1, data2);
     } else {
-
+        console.log("not a channel message");
     }
 }
 
 export function sendChannelMessage(channel, message, data1, data2) {
-    //TODO: check parameters
-    console.log("sendChannelMessage", channel, message, data1, data2);
-    const msg = new Uint8Array([
-        ((channel & 0x0F) << 4) & (message & 0x0F),
-        data1,
-        data2
-    ]);
+    if (data2 === undefined || data2 === null || isNaN(data2)) {
+        _send(new Uint8Array([
+            (message & 0xF0) | (channel & 0x0F),
+            data1 & 0x7F
+        ]));
+    } else {
+        _send(new Uint8Array([
+            (message & 0xF0) | (channel & 0x0F),
+            data1 & 0x7F,
+            data2 & 0x7F
+        ]));
+    }
 }
 
 /**
  * @param {number[]} data
  * @returns {Uint8Array}
  */
-export function universalSysex(data) {
+export function sendSysex(data) {
     //TODO: clamp the numbers to 0..255
-    return new Uint8Array([
+    _send(new Uint8Array([
         SYSEX_START,
         ...data,
         SYSEX_END
-    ]);
+    ]));
 }
 
 /**
@@ -92,8 +99,12 @@ export function sysex(data, manufacturer) {
  * @param {string} outputId
  * @returns {void}
  */
-export function sendDeviceIdRequest(outputId) {
-    // this.send(universalSysex(SYSEX_COMMANDS[SYSEX_ID_REQUEST]), outputId);
+export function sendDeviceIdRequest() {
+    _send(new Uint8Array([
+        SYSEX_START,
+        ...SYSEX_ID_REQUEST,
+        SYSEX_END
+    ]));
 }
 
 /**
@@ -131,7 +142,8 @@ export function sendDeviceIdRequest(outputId) {
  * @param {Uint8Array} data
  */
 function _send(data) {
-    console.log(outputs);
+    // console.log(outputs);
+    console.log("_send", data, hs(data));
     for (const id in outputs) {
         console.log("send to ", id, outputs[id].name);
         if (!outputs[id].enabled) {
@@ -140,10 +152,10 @@ function _send(data) {
         }
         const port = outputById(id);
         if (port) {
-            console.warn(`output port ${id} found`);
+            // console.log(`output port ${id} found`);
             //TODO: channel
-            let channel = 0;
-            logMessageOut("[" + hs(data) + "] Ch." + (channel + 1) + " " + port.name)
+            // let channel = 0;
+            logMessageOut("[" + hs(data) + "] " + port.name)
             port.send(data);
         } else {
             console.warn(`output port ${id} not found`);

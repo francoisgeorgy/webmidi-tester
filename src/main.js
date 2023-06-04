@@ -3,7 +3,7 @@
 
 
 import {MIDI, onMIDIFailure, onMIDISuccess, outputs} from "./midi.js";
-import {send} from "./midi-messages.js";
+import {send, sendDeviceIdRequest, sendSysex} from "./midi-messages.js";
 
 // var inputs: Ports = {};
 // var outputs: Ports = {};
@@ -50,9 +50,9 @@ function onClickBtSend(event) {
     // console.log('id', $( this ).parent().get( 0 ).id);
     const messageMode = $(this).data('msgMode').toUpperCase();
     const messageType = $(this).data('msgType').toUpperCase();
-    const channel = parseInt($(this).siblings('.data-ch').val(), 10);
-    const data1 = parseInt($(this).siblings('.data1').val());
-    const data2 = parseInt($(this).siblings('.data2').val());
+    const channel = parseInt($(`#${messageType}-ch`).val(), 10);
+    const data1 = parseInt($(`#${messageType}-data1`).val());
+    const data2 = parseInt($(`#${messageType}-data2`).val());
     // const data3 = $(this).siblings('.data3').val();
     // console.log($(this).data('msgType'))
     // console.log($(this).data('msgMode'))
@@ -63,6 +63,17 @@ function onClickBtSend(event) {
     send(messageMode, messageType, channel, data1, data2);
 }
 
+function onClickBtSendIDRequest() {
+    sendDeviceIdRequest();
+}
+
+function onClickBtSendSysex() {
+    sendSysex( [0x00, 0x21, 0x75]);
+}
+
+function onClickBtSendBytes() {
+}
+
 function onClickBtClearMessages() {
     clearContent("logentries");
 }
@@ -70,6 +81,9 @@ function onClickBtClearMessages() {
 function setupUIHandler() {
     $('#outputs').on('click', 'input.port-enable', onClickPortEnable);
     $('.btSend').on('click', onClickBtSend);
+    $('#btSendIDRequest').on('click', onClickBtSendIDRequest);
+    $('#btSendSysex').on('click', onClickBtSendSysex);
+    $('#btSendBytes').on('click', onClickBtSendBytes);
     $('#btClearMessages').on('click', onClickBtClearMessages);
 
 }
@@ -78,7 +92,7 @@ function setupUIHandler() {
 // Events and Messages
 //-----------------------------------------------------------------------------
 
-const time0 = Date.now();
+const t0 = Date.now();
 
 // const log = [];
 
@@ -87,19 +101,20 @@ const EVENT_MESSAGE = 1;
 const DIRECTION_IN = 0;
 const DIRECTION_OUT = 1;
 
-function printEvent(description) {
+function printEvent(description, css='') {
     // log.push({type: EVENT_API, description: "WedMIDI: " + description, timestamp: Date.now() - time0})
+    const t = (Date.now() - t0) / 1000;
     let cls = null;
     document
         .getElementById("logentries")
-        .insertAdjacentHTML("beforeend", "<div class='logentry " + (cls || "") + "'>" + description + "</div>");
+        .insertAdjacentHTML("beforeend", `<div class='logentry ${css}'>${t.toFixed(3).padStart(7)} ${description}</div>`);
     document.getElementById("end-of-list").scrollIntoView({behavior: "smooth", block: "end"});
 }
 
 export function logEvent(description) {
     console.log("logEvent", description);
     // print({type: EVENT_API, description: "WedMIDI: " + description, timestamp: Date.now() - time0})
-    printEvent("WedMIDI: " + description);
+    printEvent("WedMIDI " + description);
     // let cls = null;
     // document
     //     .getElementById("logentries")
@@ -108,7 +123,7 @@ export function logEvent(description) {
 
 export function logMessageIn(description) {
     console.log("logEvent", description);
-    printEvent("receive: " + description);
+    printEvent("receive " + description);
     // log.push({
     //     type: EVENT_MESSAGE,
     //     timestamp: Date.now() - time0,
@@ -119,7 +134,7 @@ export function logMessageIn(description) {
 
 export function logMessageOut(description) {
     console.log("logEvent", description);
-    printEvent("send:    " + description);
+    printEvent("send    " + description, 'entry-msg-out');
     // log.push({
     //     type: EVENT_MESSAGE,
     //     timestamp: Date.now() - time0,
@@ -131,7 +146,7 @@ export function logMessageOut(description) {
 export function logError(description) {
     console.log("logError", description);
     // print({type: EVENT_API, description: "WedMIDI: " + description, timestamp: Date.now() - time0})
-    printEvent("ERROR: " + description);
+    printEvent("ERROR " + description, 'entry-error');
     // let cls = null;
     // document
     //     .getElementById("logentries")
@@ -192,7 +207,7 @@ function connectInputs() {
 
 function main() {
     if (navigator.requestMIDIAccess) {
-        navigator.requestMIDIAccess({sysex:false}).then(onMIDISuccess, onMIDIFailure);
+        navigator.requestMIDIAccess({sysex: true}).then(onMIDISuccess, onMIDIFailure);
     } else {
         logError("Your browser does not support WebMIDI.");
         document.getElementById("unsupported").classList.remove('hide');

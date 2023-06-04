@@ -63,7 +63,7 @@
                             Note Off
                         </div>
                         <div>
-                            <select class="data data-ch">
+                            <select class="data data-ch" id="NOTE_OFF-ch">
                                 <option value="0">1</option>
                                 <option value="1">2</option>
                                 <option value="2">3</option>
@@ -83,10 +83,10 @@
                             </select>
                         </div>
                         <div>
-                            note <input type="text" class="data data1" />
+                            note <input type="text" class="data data1" id="NOTE_OFF-data1" value="0" />
                         </div>
                         <div>
-                            velocity <input type="text" class="data data2" />
+                            velocity <input type="text" class="data data2" id="NOTE_OFF-data2" value="0" />
                         </div>
                         <div>
                             <button title="send a Note OFF message" class="btSend"
@@ -97,7 +97,7 @@
                             Note On
                         </div>
                         <div>
-                            <select class="data data-ch">
+                            <select class="data data-ch" id="NOTE_ON-ch">
                                 <option value="0">1</option>
                                 <option value="1">2</option>
                                 <option value="2">3</option>
@@ -117,10 +117,10 @@
                             </select>
                         </div>
                         <div>
-                            note <input type="text" class="data data1" />
+                            note <input type="text" class="data data1" id="NOTE_ON-data1" value="0" />
                         </div>
                         <div>
-                            velocity <input type="text" class="data data2" />
+                            velocity <input type="text" class="data data2" id="NOTE_ON-data2" value="0" />
                         </div>
                         <div>
                             <button title="send a Note ON message" class="btSend"
@@ -129,7 +129,7 @@
 
                         <div class="msg-name">Poly. Key Pres.</div>
                         <div>
-                            <select class="data data-ch">
+                            <select class="data data-ch" id="POLY_PRESSURE-ch">
                                 <option value="0">1</option>
                                 <option value="1">2</option>
                                 <option value="2">3</option>
@@ -149,10 +149,10 @@
                             </select>
                         </div>
                         <div>
-                            note <input type="text" class="data data1" />
+                            note <input type="text" class="data data1" id="POLY_PRESSURE-data1" value="0" />
                         </div>
                         <div>
-                            pressure <input type="text" class="data data2" />
+                            pressure <input type="text" class="data data2" id="POLY_PRESSURE-data2" value="0" />
                         </div>
                         <div>
                             <button title="send a Polyphonic Key Pressure (Aftertouch) message" class="btSend"
@@ -161,7 +161,7 @@
 
                         <div class="msg-name">Controller (CC)</div>
                         <div>
-                            <select class="data data-ch">
+                            <select class="data data-ch" id="CC-ch">
                                 <option value="0">1</option>
                                 <option value="1">2</option>
                                 <option value="2">3</option>
@@ -181,10 +181,10 @@
                             </select>
                         </div>
                         <div>
-                            controller <input type="text" class="data data1" />
+                            controller <input type="text" class="data data1" id="CC-data1" value="0" />
                         </div>
                         <div>
-                            value <input type="text" class="data data2" />
+                            value <input type="text" class="data data2" id="CC-data2" value="0" />
                         </div>
                         <div>
                             <button title="send a Continuous Controller message" class="btSend"
@@ -193,7 +193,7 @@
 
                         <div class="msg-name">Prog. Change (PC)</div>
                         <div>
-                            <select class="data data-ch">
+                            <select class="data data-ch" id="PC-ch">
                                 <option value="0">1</option>
                                 <option value="1">2</option>
                                 <option value="2">3</option>
@@ -213,7 +213,7 @@
                             </select>
                         </div>
                         <div>
-                            program <input type="text" class="data data1" />
+                            program <input type="text" class="data data1" id="PC-data1" value="0" />
                         </div>
                         <div></div>
                         <div>
@@ -223,7 +223,7 @@
 
                         <div class="msg-name">Channel Pres.</div>
                         <div>
-                            <select class="data data-ch">
+                            <select class="data data-ch" id="CHANNEL_PRESSURE-ch">
                                 <option value="0">1</option>
                                 <option value="1">2</option>
                                 <option value="2">3</option>
@@ -243,7 +243,7 @@
                             </select>
                         </div>
                         <div>
-                            pressure <input type="text" class="data data1" />
+                            pressure <input type="text" class="data data1" id="CHANNEL_PRESSURE-data1" value="0" />
                         </div>
                         <div>
 
@@ -257,7 +257,7 @@
 
                         <div class="msg-name">Pitch Bend</div>
                         <div>
-                            <select class="data data-ch">
+                            <select class="data data-ch" id="PITCH_BEND-ch">
                                 <option value="0">1</option>
                                 <option value="1">2</option>
                                 <option value="2">3</option>
@@ -277,10 +277,10 @@
                             </select>
                         </div>
                         <div>
-                            LSB <input type="text" class="data data1" />
+                            LSB <input type="text" class="data data1" id="PITCH_BEND-data1" value="0" />
                         </div>
                         <div>
-                            MSB <input type="text" class="data data2" />
+                            MSB <input type="text" class="data data2" id="PITCH_BEND-data2" value="0" />
                         </div>
                         <div>
                             <button title="send a Pitch Bend message" class="btSend"
@@ -290,7 +290,7 @@
 
                         <div class="msg-name">NRPN</div>
                         <div>
-                            <select class="data data-ch">
+                            <select class="data data-ch" id="NRPN-ch">
                                 <option value="0">1</option>
                                 <option value="1">2</option>
                                 <option value="2">3</option>
@@ -310,27 +310,27 @@
                             </select>
                         </div>
                         <div>
-                            LSB <input type="text" class="data data1" />
+                            LSB <input type="text" class="data data1" id="NRPN-data1" value="0" />
                         </div>
                         <div>
-                            MSB <input type="text" class="data data2" />
+                            MSB <input type="text" class="data data2" id="NRPN-data2" value="0" />
                         </div>
                         <div>
                             <button title="send a NRPN message" class="btSend"
-                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PITCH_BEND">Send</button>
+                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NRPN">Send</button>
                         </div>
 
 
                     </div>
                 </div>
-                <div class="ports ml-30">
+                <div class="ports ml-20">
                     <div>
-                        <span class="bold">Outputs :</span>
-                        <div id="outputs" class="infos"></div>
-                    </div>
-                    <div class="mt-20">
                         <span class="bold">Inputs :</span>
                         <div id="inputs" class="infos"></div>
+                    </div>
+                    <div class="mt-20">
+                        <span class="bold">Outputs :</span>
+                        <div id="outputs" class="infos"></div>
                     </div>
                 </div>
 <!--                <div class="ml-20">-->
@@ -344,7 +344,7 @@
                         Device Identity Request
                     </div>
                     <div class="justify-start">
-                        <button title="send a SysEx message"  class="btSend">Send</button>
+                        <button title="send a SysEx message"  id="btSendIDRequest">Send</button>
                     </div>
                     <div>
                     </div>
@@ -355,7 +355,7 @@
                         <input type="text" class="sysex" />
                     </div>
                     <div>
-                        <button title="send a SysEx message"  class="btSend">Send</button>
+                        <button title="send a SysEx message"  id="btSendSysex">Send</button>
                     </div>
                     <div class="msg-name">
                         Arbitrary bytes
@@ -364,13 +364,14 @@
                         <input type="text" class="sysex" />
                     </div>
                     <div>
-                        <button title="send an arbitrary message"  class="btSend">Send</button>
+                        <button title="send an arbitrary message"  id="btSendBytes">Send</button>
                     </div>
                 </div>
             </div>
 
         </div>
         <div class="mt-20">
+            Messages are sent to the checked outputs.<br />
             You can enter hexadecimal values by prefixing them with '0x'. You can mix dec and hex values in the same message.
         </div>
     </main>

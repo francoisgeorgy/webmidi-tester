@@ -34,6 +34,8 @@ main {
 
 .ports {
     /*display: flex;*/
+    border-left: 1px solid #aaa;
+    padding-left: 20px;
 }
 
 .tools {
@@ -79,8 +81,13 @@ main {
     justify-self: start;
 }
 
+select.data {
+    text-align: end;
+}
+
 input.data {
     width: 3rem;
+    text-align: end;
 }
 
 input.sysex {
@@ -94,23 +101,5 @@ input.sysex {
 }
 
 .bottom {
-}
-
-.messages {
-    border-top: 1px solid black;
-    /*padding: 0 20px;*/
-    margin: 0 20px;
-    height:50%;
-    overflow-y: auto;
-    background-color: var(--messages-bg-color);
-}
-
-#logentries {
-    padding: 5px 0 0 0;
-    font-family: monospace;
-}
-
-.logentry {
-    white-space: pre;
 }
 
