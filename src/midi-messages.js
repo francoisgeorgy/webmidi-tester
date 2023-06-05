@@ -101,19 +101,16 @@ export function sendDeviceIdRequest() {
  * @param {Uint8Array} data
  */
 function _send(data) {
-    // console.log(outputs);
-    console.log("_send", data, hs(data));
+    // console.log("_send", data, hs(data));
     for (const id in outputs) {
-        console.log("send to ", id, outputs[id].name);
+        // console.log("send to ", id, outputs[id].name);
+        console.log(outputs[id]);
         if (!outputs[id].enabled) {
             console.log(`output port ${id} is disabled; skipping`);
             continue;
         }
         const port = outputById(id);
         if (port) {
-            // console.log(`output port ${id} found`);
-            //TODO: channel
-            // let channel = 0;
             logMessageOut("[" + hs(data) + "] " + port.name)
             port.send(data);
         } else {

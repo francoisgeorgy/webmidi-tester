@@ -19,11 +19,11 @@ function clearContent(elementId) {
 //-----------------------------------------------------------------------------
 
 function onClickPortEnable(event) {
-    console.log("click on ", event.target.id, event);
+    // console.log("click on ", event.target.id, event);
     let id = event.target.id.substring("enable-port-".length);
-    console.log("id is", id, outputs);
+    // console.log("id is", id, outputs);
     outputs[id].enabled = $(`input#${event.target.id}`).is(':checked');
-    console.log(outputs);
+    // console.log(outputs);
 }
 
 function onClickBtSend(event) {
