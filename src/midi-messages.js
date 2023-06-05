@@ -15,20 +15,15 @@ const MIDI_MESSAGE = {
         "CC" : 0xB0,
         "PC" : 0xC0,
         "CHANNEL_PRESSURE" : 0xD0,
-        "PITCH_BEND" : 0xE0
+        "PITCH_BEND" : 0xE0,
+        "NRPN" : 0x00
     }
 }
-
-// let a = MIDI_MESSAGE['CHANNEL_MESSAGE']['NOTE_OFF'];
 
 const SYSEX_START = 0xF0;
 const SYSEX_END = 0xF7;
 
 const SYSEX_ID_REQUEST = [0x7E, 0x00, 0x06, 0x01];
-
-const WAIT_BETWEEN_MESSAGES = 50;
-
-const wait = (ms) => new Promise(r => setTimeout(r, ms));
 
 export function send(messageMode, messageType, channel, data1, data2) {
     console.log("send", messageMode, messageType, channel, data1, data2);
@@ -45,7 +40,11 @@ export function send(messageMode, messageType, channel, data1, data2) {
             console.warn("invalid channel", channel);
             return;
         }
-        sendChannelMessage(channel, MIDI_MESSAGE[messageMode][messageType], data1, data2);
+        // if (messageType === "NRPN") {
+        //     sendChannelMessage(channel, MIDI_MESSAGE["CHANNEL_MESSAGE"]["CC"], data1, data2);
+        // } else {
+            sendChannelMessage(channel, MIDI_MESSAGE[messageMode][messageType], data1, data2);
+        // }
     } else {
         console.log("not a channel message");
     }
@@ -71,27 +70,17 @@ export function sendChannelMessage(channel, message, data1, data2) {
  * @returns {Uint8Array}
  */
 export function sendSysex(data) {
-    //TODO: clamp the numbers to 0..255
+
     _send(new Uint8Array([
         SYSEX_START,
-        ...data,
+        ...(data.filter(b => b !== SYSEX_START && b !== SYSEX_END)
+                .map(b => b & 0x7F)),
         SYSEX_END
     ]));
 }
 
-/**
- * @param {number[]} data
- * @param {number[]} manufacturer
- * @returns {Uint8Array}
- */
-export function sysex(data, manufacturer) {
-    //TODO: clamp the numbers to 0..255
-    return new Uint8Array([
-        SYSEX_START,
-        ...manufacturer,
-        ...data,
-        SYSEX_END
-    ]);
+export function sendAny(data) {
+    _send(new Uint8Array(data.map(b => b & 0xFF)));
 }
 
 /**
@@ -106,36 +95,6 @@ export function sendDeviceIdRequest() {
         SYSEX_END
     ]));
 }
-
-/**
- * function universalSysex(data: number[]): Uint8Array {
- * @param data
- * @returns {Uint8Array}
- */
-// function universalSysex(data) {
-//     //TODO: clamp the numbers to 0..255
-//     return new Uint8Array([
-//         SYSEX_START,
-//         ...data,
-//         SYSEX_END
-//     ]);
-// }
-
-/**
- * function sysex(data: number[]): Uint8Array {
- * @param data
- * @returns {Uint8Array}
- */
-// function sysex(data) {
-//     //TODO: clamp the numbers to 0..255
-//     return new Uint8Array([
-//         SYSEX_START,
-//         ...DA_SYSEX_MANUFACTURER_ID,
-//         ...data,
-//         SYSEX_END
-//     ]);
-//     return new Uint8Array([]);
-// }
 
 /**
  *

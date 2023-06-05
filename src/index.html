@@ -120,7 +120,7 @@
                             note <input type="text" class="data data1" id="NOTE_ON-data1" value="0" />
                         </div>
                         <div>
-                            velocity <input type="text" class="data data2" id="NOTE_ON-data2" value="0" />
+                            velocity <input type="text" class="data data2" id="NOTE_ON-data2" value="127" />
                         </div>
                         <div>
                             <button title="send a Note ON message" class="btSend"
@@ -280,7 +280,7 @@
                             LSB <input type="text" class="data data1" id="PITCH_BEND-data1" value="0" />
                         </div>
                         <div>
-                            MSB <input type="text" class="data data2" id="PITCH_BEND-data2" value="0" />
+                            MSB <input type="text" class="data data2" id="PITCH_BEND-data2" value="64" />
                         </div>
                         <div>
                             <button title="send a Pitch Bend message" class="btSend"
@@ -288,6 +288,7 @@
                         </div>
 
 
+<!--
                         <div class="msg-name">NRPN</div>
                         <div>
                             <select class="data data-ch" id="NRPN-ch">
@@ -319,17 +320,18 @@
                             <button title="send a NRPN message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NRPN">Send</button>
                         </div>
+-->
 
 
                     </div>
                 </div>
                 <div class="ports ml-20">
                     <div>
-                        <span class="bold">Inputs :</span>
+                        <span class="bold">Inputs :</span> (<a href="details.html" target="_blank">details</a>)
                         <div id="inputs" class="infos"></div>
                     </div>
                     <div class="mt-20">
-                        <span class="bold">Outputs :</span>
+                        <span class="bold">Outputs :</span> (<a href="details.html" target="_blank">details</a>)
                         <div id="outputs" class="infos"></div>
                     </div>
                 </div>
@@ -352,7 +354,7 @@
                         SysEx
                     </div>
                     <div>
-                        <input type="text" class="sysex" />
+                        <input type="text" class="sysex" id="sysex-data" />
                     </div>
                     <div>
                         <button title="send a SysEx message"  id="btSendSysex">Send</button>
@@ -361,7 +363,7 @@
                         Arbitrary bytes
                     </div>
                     <div>
-                        <input type="text" class="sysex" />
+                        <input type="text" class="sysex" id="any-data" />
                     </div>
                     <div>
                         <button title="send an arbitrary message"  id="btSendBytes">Send</button>
@@ -370,13 +372,16 @@
             </div>
 
         </div>
+<!--
         <div class="mt-20">
             Messages are sent to the checked outputs.<br />
             You can enter hexadecimal values by prefixing them with '0x'. You can mix dec and hex values in the same message.
         </div>
+-->
     </main>
     <div class="block-title mt-20">
         <span class="bold">Events and Messages</span> <button id="btClearMessages">clear</button>
+        <span class="ml-20"><a href="https://studiocode.dev/midi-monitor/" target="_blank">MIDI Monitor</a></span>
     </div>
     <div class="messages">
         <div id="logentries">

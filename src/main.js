@@ -3,35 +3,16 @@
 
 
 import {MIDI, onMIDIFailure, onMIDISuccess, outputs} from "./midi.js";
-import {send, sendDeviceIdRequest, sendSysex} from "./midi-messages.js";
-
-// var inputs: Ports = {};
-// var outputs: Ports = {};
-
+import {send, sendAny, sendDeviceIdRequest, sendSysex} from "./midi-messages.js";
+import {parseNumbersString} from "./utils.js";
 
 //=============================================================================
 //
 //-----------------------------------------------------------------------------
 
-/*
-function print(what, where, cls, reverse) {
-    document.getElementById(where).insertAdjacentHTML(reverse ? "afterbegin" : "beforeend", "<div class='" + (cls || "") + "'>" + what + "</div>");
-}
-
-function success(msg) {
-    print("&#10004; " + msg, "support", "success");
-}
-
-function failure(msg) {
-    print("&#10008; " + msg, "support", "failure");
-}
-
-*/
 function clearContent(elementId) {
     document.getElementById(elementId).innerHTML = "";
 }
-
-
 
 //=============================================================================
 // UI interaction
@@ -46,20 +27,13 @@ function onClickPortEnable(event) {
 }
 
 function onClickBtSend(event) {
-    // console.log(event);
-    // console.log('id', $( this ).parent().get( 0 ).id);
+
     const messageMode = $(this).data('msgMode').toUpperCase();
     const messageType = $(this).data('msgType').toUpperCase();
     const channel = parseInt($(`#${messageType}-ch`).val(), 10);
     const data1 = parseInt($(`#${messageType}-data1`).val());
     const data2 = parseInt($(`#${messageType}-data2`).val());
-    // const data3 = $(this).siblings('.data3').val();
-    // console.log($(this).data('msgType'))
-    // console.log($(this).data('msgMode'))
-    // console.log('data-ch', $( this ).siblings('.data-ch').val());
-    // console.log('data1', $( this ).siblings('.data1').val());
-    // console.log('data2', $( this ).siblings('.data2').val());
-    // console.log('data3', $( this ).siblings('.data3').val());
+
     send(messageMode, messageType, channel, data1, data2);
 }
 
@@ -68,10 +42,11 @@ function onClickBtSendIDRequest() {
 }
 
 function onClickBtSendSysex() {
-    sendSysex( [0x00, 0x21, 0x75]);
+    sendSysex(parseNumbersString($("#sysex-data").val()));
 }
 
 function onClickBtSendBytes() {
+    sendAny(parseNumbersString($("#any-data").val()));
 }
 
 function onClickBtClearMessages() {
@@ -94,15 +69,12 @@ function setupUIHandler() {
 
 const t0 = Date.now();
 
-// const log = [];
-
 const EVENT_API = 0;
 const EVENT_MESSAGE = 1;
 const DIRECTION_IN = 0;
 const DIRECTION_OUT = 1;
 
 function printEvent(description, css='') {
-    // log.push({type: EVENT_API, description: "WedMIDI: " + description, timestamp: Date.now() - time0})
     const t = (Date.now() - t0) / 1000;
     let cls = null;
     document
@@ -112,56 +84,24 @@ function printEvent(description, css='') {
 }
 
 export function logEvent(description) {
-    console.log("logEvent", description);
-    // print({type: EVENT_API, description: "WedMIDI: " + description, timestamp: Date.now() - time0})
     printEvent("WedMIDI " + description);
-    // let cls = null;
-    // document
-    //     .getElementById("logentries")
-    //     .insertAdjacentHTML("beforeend", "<div class='" + (cls || "") + "'>" + description + "</div>");
 }
 
 export function logMessageIn(description) {
-    console.log("logEvent", description);
     printEvent("receive " + description);
-    // log.push({
-    //     type: EVENT_MESSAGE,
-    //     timestamp: Date.now() - time0,
-    //     description: "receive: " + description,
-    //     direction: DIRECTION_IN
-    // })
 }
 
 export function logMessageOut(description) {
-    console.log("logEvent", description);
     printEvent("send    " + description, 'entry-msg-out');
-    // log.push({
-    //     type: EVENT_MESSAGE,
-    //     timestamp: Date.now() - time0,
-    //     description: "receive: " + description,
-    //     direction: DIRECTION_IN
-    // })
 }
 
 export function logError(description) {
-    console.log("logError", description);
-    // print({type: EVENT_API, description: "WedMIDI: " + description, timestamp: Date.now() - time0})
     printEvent("ERROR " + description, 'entry-error');
-    // let cls = null;
-    // document
-    //     .getElementById("logentries")
-    //     .insertAdjacentHTML("beforeend", "<div class='" + (cls || "") + "'>" + description + "</div>");
 }
-
-// function displayEventsAndMessages() {
-//     container = $("logentries");
-//     document.getElementById(where).insertAdjacentHTML(reverse ? "afterbegin" : "beforeend", "<div class='" + (cls || "") + "'>" + what + "</div>");
-// }
 
 //=============================================================================
 //
 //-----------------------------------------------------------------------------
-
 
 export function listInputsAndOutputs() {
     if (MIDI === null) return;
@@ -179,27 +119,6 @@ export function listInputsAndOutputs() {
             `<div class="">${port.manufacturer} ${port.name} (ID ${port.id})</div>`);
     });
 }
-
-/*
-function connectInputs() {
-    if (MIDI === null) return;
-    MIDI.inputs.forEach(function(port, key) {
-        port.onmidimessage = onMidiMessage;
-    });
-}
-*/
-
-
-
-//=============================================================================
-// WebMIDI in puts and outputs management
-//-----------------------------------------------------------------------------
-
-
-//=============================================================================
-// WebMIDI setup
-//-----------------------------------------------------------------------------
-
 
 //=============================================================================
 // Bootstrap
@@ -224,31 +143,3 @@ function whenReadyDo(callback) {
 }
 
 whenReadyDo(main);
-
-
-//=============================================================================
-// UTILS
-//-----------------------------------------------------------------------------
-
-/*
-function padZero(str, len, char) {
-    let s = "";
-    let c = char || "0";
-    let n = (len || 2) - str.length;
-    while (s.length < n) s += c;
-    return s + str;
-}
-
-function h(v) {
-    return (v === null || v === undefined) ? "" : padZero(v.toString(16).toUpperCase(), 2);
-}
-
-function hs(data) {
-    return (data === null || data === undefined) ? "" : (Array.from(data).map(h)).join(" ");
-}
-*/
-
-
-//=============================================================================
-// UTILS hexstrings
-//-----------------------------------------------------------------------------

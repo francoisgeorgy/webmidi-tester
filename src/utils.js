@@ -50,25 +50,6 @@ export function hsbr(data, cols= 8, sepcol = '<br>', sep = '&nbsp;') {
     }, '');
 }
 
-// dec string
-/*
-const ds = data => (data === null || data === undefined) ? "" : (Array.from(data).map(n => d(n))).join(" ");    // Array.from() is necessary to get a non-typed array
-
-const dsbr = (data, cols= 8, sepcol = '<br>', sep = '&nbsp;') => {
-    if (data === null || data === undefined) return "";
-    const a = Array.from(data).map(n => d(n));  // Array.from() is necessary to get a non-typed array
-    return a.reduce((acc, v, i) => {
-        if (i === 0) {
-            return v;
-        } else if (i % cols) {
-            return acc + sep + v;
-        } else {
-            return acc + sepcol + v;
-        }
-    }, '');
-}
-*/
-
 // hex string compact
 // @ts-ignore
 export function hsc(data) {
@@ -89,3 +70,10 @@ export function fromHexString(str, sep) {
     return a;
 }
 
+export function parseNumbersString(str) {
+    let data = str.trim().split(" ").map(s => {
+        let n = parseInt(s);
+        return isNaN(n) ? null : n;
+    }).filter(n => n !== null);
+    return data;
+}

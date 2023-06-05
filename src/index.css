@@ -114,7 +114,7 @@ label {
 .messages {
   border-top: 1px solid black;
   /*padding: 0 20px;*/
-  margin: 0 20px;
+  margin: 0 20px 5px 20px;
   height:50%;
   overflow-y: auto;
   background-color: var(--messages-bg-color);
