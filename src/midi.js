@@ -236,10 +236,7 @@ function outputDebugLabel(id) {
  */
 function onMidiMessage(message) {
     if (message instanceof MIDIMessageEvent) {
-        let bytes = message.data;
-        let channel = bytes[0] & 0x0F;
-        let port = message.currentTarget;
-        logMessageIn("[" + hs(bytes) + "] Ch." + (channel + 1) + " " + port.name);
+        logMessageIn(`[${hs(message.data)}] ${message.currentTarget.name}`);
     }
 }
 

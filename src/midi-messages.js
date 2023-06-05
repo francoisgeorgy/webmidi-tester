@@ -103,15 +103,13 @@ export function sendDeviceIdRequest() {
 function _send(data) {
     // console.log("_send", data, hs(data));
     for (const id in outputs) {
-        // console.log("send to ", id, outputs[id].name);
-        console.log(outputs[id]);
         if (!outputs[id].enabled) {
-            console.log(`output port ${id} is disabled; skipping`);
+            // console.log(`output port ${id} is disabled; skipping`);
             continue;
         }
         const port = outputById(id);
         if (port) {
-            logMessageOut("[" + hs(data) + "] " + port.name)
+            logMessageOut(`[${hs(data)}] ${port.name}`);
             port.send(data);
         } else {
             console.warn(`output port ${id} not found`);

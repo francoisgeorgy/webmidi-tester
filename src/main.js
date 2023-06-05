@@ -10,7 +10,7 @@ import {parseNumbersString} from "./utils.js";
 //
 //-----------------------------------------------------------------------------
 
-function clearContent(elementId) {
+function clearPorts(elementId) {
     document.getElementById(elementId).innerHTML = "";
 }
 
@@ -47,7 +47,7 @@ function onClickBtSendBytes() {
 }
 
 function onClickBtClearMessages() {
-    clearContent("logentries");
+    clearPorts("logentries");
 }
 
 function setupUIHandler() {
@@ -77,7 +77,7 @@ function printEvent(description, css='') {
     document
         .getElementById("logentries")
         .insertAdjacentHTML("beforeend", `<div class='logentry ${css}'>${t.toFixed(3).padStart(7)} ${description}</div>`);
-    document.getElementById("end-of-list").scrollIntoView({behavior: "smooth", block: "end"});
+    document.getElementById("end-of-list").scrollIntoView({behavior: "instant", block: "end"});
 }
 
 export function logEvent(description) {
@@ -102,8 +102,8 @@ export function logError(description) {
 
 export function listInputsAndOutputs() {
     if (MIDI === null) return;
-    clearContent("outputs");
-    clearContent("inputs");
+    clearPorts("outputs");
+    clearPorts("inputs");
     const cls = null;
     MIDI.outputs.forEach(function(port, key) {
         document.getElementById("outputs").insertAdjacentHTML("beforeend",
