@@ -20,7 +20,10 @@ function clearContent(elementId) {
 
 function onClickPortEnable(event) {
     // console.log("click on ", event.target.id, event);
-    let id = event.target.id.substring("enable-port-".length);
+
+    // let id = event.target.id.substring("enable-port-".length);
+    let id = decodeURIComponent($(event.target).data("portId"));
+
     // console.log("id is", id, outputs);
     outputs[id].enabled = $(`input#${event.target.id}`).is(':checked');
     // console.log(outputs);
@@ -110,7 +113,7 @@ export function listInputsAndOutputs() {
     const cls = null;
     MIDI.outputs.forEach(function(port, key) {
         document.getElementById("outputs").insertAdjacentHTML("beforeend",
-            `<div class=""><input type="checkbox" class="port-enable" id="enable-port-${port.id}" 
+            `<div class=""><input type="checkbox" class="port-enable" data-port-id="${encodeURIComponent(port.id)}" 
                       checked="${port.enabled ? 'true' : 'false'}"/>${port.manufacturer} ${port.name} (ID ${port.id})</div>`
         );
     });
