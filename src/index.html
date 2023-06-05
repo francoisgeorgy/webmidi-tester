@@ -29,29 +29,9 @@
 <!--        <Switch onChange={toggleTheme} checked={theme === NIGHT_THEME} height={18} width={36}-->
     </header>
     <main>
-<!--
-        <div id="support" class="infos"></div>
-        <div id="details" class="hide">
-            <h3>Inputs:</h3>
-            <div id="inputs" class="infos"></div>
-            <h3>Outputs:</h3>
-            <div id="outputs" class="infos"></div>
-            <h3>MIDI messages:</h3>
-            <div class="light">If you have a MIDI controller connected, any message sent by this controller will be listed here.</div>
-            <div id="messages" class=""></div>
-        </div>
--->
         <div class="tools mt-10">
-<!--            <h2>Channel Voice messages</h2>-->
-<!--            <h2>Channel Mode messages</h2>-->
-<!--            <h2>System Real-Time messages</h2>-->
-<!--            <h2>System Common messages</h2>-->
-<!--            <h2>System Exclusive messages</h2>-->
-<!--            <h2>Send messages to selected outputs :</h2>-->
-
             <div class="flex-row">
                 <div>
-<!--                    <span class="bold">Channel Voice Messages :</span>-->
                     <div class="voice-msg-grid">
 
                         <div class="grid-col-span-2">channel</div>
@@ -253,8 +233,6 @@
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CHANNEL_PRESSURE">Send</button>
                         </div>
 
-
-
                         <div class="msg-name">Pitch Bend</div>
                         <div>
                             <select class="data data-ch" id="PITCH_BEND-ch">
@@ -286,8 +264,6 @@
                             <button title="send a Pitch Bend message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PITCH_BEND">Send</button>
                         </div>
-
-
 <!--
                         <div class="msg-name">NRPN</div>
                         <div>
@@ -321,8 +297,6 @@
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NRPN">Send</button>
                         </div>
 -->
-
-
                     </div>
                 </div>
                 <div class="ports ml-20">
@@ -335,12 +309,9 @@
                         <div id="outputs" class="infos"></div>
                     </div>
                 </div>
-<!--                <div class="ml-20">-->
-<!--                </div>-->
             </div>
 
             <div class="mt-20">
-<!--            <span class="bold">System Exclusive Messages :</span>-->
                 <div class="sysex-msg-grid">
                     <div class="msg-name">
                         Device Identity Request
