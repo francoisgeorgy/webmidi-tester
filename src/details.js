@@ -11,9 +11,6 @@ ID:           ${port.id}
 Manufacturer: ${port.manufacturer} 
 Name:         ${port.name}
 Version:      ${port.version}  
-Type:         ${port.type}  
-State:        ${port.state}  
-Connection:   ${port.connection}  
 </pre>`);
     });
     MIDI.outputs.forEach(function(port, key) {
@@ -23,9 +20,6 @@ ID:           ${port.id}
 Manufacturer: ${port.manufacturer} 
 Name:         ${port.name}
 Version:      ${port.version}  
-Type:         ${port.type}  
-State:        ${port.state}  
-Connection:   ${port.connection}  
 </pre>`);
     });
 }
