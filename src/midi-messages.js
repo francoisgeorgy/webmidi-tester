@@ -101,10 +101,8 @@ export function sendDeviceIdRequest() {
  * @param {Uint8Array} data
  */
 function _send(data) {
-    // console.log("_send", data, hs(data));
     for (const id in outputs) {
         if (!outputs[id].enabled) {
-            // console.log(`output port ${id} is disabled; skipping`);
             continue;
         }
         const port = outputById(id);

@@ -1,7 +1,6 @@
 // @ts-check
 /// <reference path="webmidi-types.d.ts"/>
 
-
 import {MIDI, onMIDIFailure, onMIDISuccess, outputs} from "./midi.js";
 import {send, sendAny, sendDeviceIdRequest, sendSysex} from "./midi-messages.js";
 import {parseNumbersString} from "./utils.js";
@@ -65,11 +64,6 @@ function setupUIHandler() {
 //-----------------------------------------------------------------------------
 
 const t0 = Date.now();
-
-const EVENT_API = 0;
-const EVENT_MESSAGE = 1;
-const DIRECTION_IN = 0;
-const DIRECTION_OUT = 1;
 
 function printEvent(description, css='') {
     const t = (Date.now() - t0) / 1000;

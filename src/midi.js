@@ -1,6 +1,6 @@
 import {hs} from "./utils.js";
 import {listInputsAndOutputs, logError, logEvent, logMessageIn, logMessageOut} from "./main.js";
-import {loadPreferences, savePreferences} from "./preferences.js";
+// import {loadPreferences, savePreferences} from "./preferences.js";
 
 /**
  *  @typedef WebMidi.MIDIAccess
@@ -112,7 +112,7 @@ function useInput(id) {
     if (inputInUse !== id) {   // do we select another device?
         if (inputById(id)) {
             inputInUse = id;
-            savePreferences({input_id: id});
+            // savePreferences({input_id: id});
         }
     }
 }
@@ -138,7 +138,7 @@ function useOutput(id) {
     if (outputInUse !== id) {
         if (outputById(id)) {
             outputInUse = id;
-            savePreferences({output_id: id});
+            // savePreferences({output_id: id});
         }
     }
 }
@@ -155,10 +155,10 @@ function releaseOutput() {
  */
 function autoConnectInput() {
     if (inputInUse) return;
-    const s = loadPreferences();
-    if (s.input_id) {
-        useInput(s.input_id);
-    }
+    // const s = loadPreferences();
+    // if (s.input_id) {
+    //     useInput(s.input_id);
+    // }
 }
 
 /**
@@ -166,10 +166,10 @@ function autoConnectInput() {
  */
 function autoConnectOutput() {
     if (outputInUse) return;
-    const s = loadPreferences();
-    if (s.output_id) {
-        useOutput(s.output_id);
-    }
+    // const s = loadPreferences();
+    // if (s.output_id) {
+    //     useOutput(s.output_id);
+    // }
 }
 
 /**

@@ -1,5 +1,3 @@
-
-
 /**
  * const padZero = (str: string, len: number, char: string = '0') => {
  * @param str
