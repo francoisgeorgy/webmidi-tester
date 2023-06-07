@@ -1,6 +1,6 @@
 var MIDI = null;
 
-export function listInputsAndOutputs() {
+export function printInputsAndOutputs() {
     if (MIDI === null) return;
     document.getElementById("inputs").innerHTML = "";
     document.getElementById("outputs").innerHTML = "";
@@ -30,8 +30,8 @@ Version:      ${port.version}
 
 function onMIDISuccess(midiAccess) {
     MIDI = midiAccess;
-    MIDI.onstatechange = listInputsAndOutputs;
-    listInputsAndOutputs();
+    MIDI.onstatechange = printInputsAndOutputs;
+    printInputsAndOutputs();
 }
 
 function onMIDIFailure(msg) {
@@ -51,7 +51,7 @@ function main() {
     }
 }
 
-function whenReadyDo(callback) {
+function whenReadyCall(callback) {
     if (document.readyState !== "loading") {
         callback();
     } else {
@@ -59,4 +59,4 @@ function whenReadyDo(callback) {
     }
 }
 
-whenReadyDo(main);
+whenReadyCall(main);

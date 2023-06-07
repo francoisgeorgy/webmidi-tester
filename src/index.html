@@ -14,7 +14,7 @@
     <script src="utils.js" type="module"></script>
     <script src="main.js" type="module"></script>
     <link rel="stylesheet" href="themes.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
     <header>
@@ -299,16 +299,18 @@
                 <div class="ports ml-20">
                     <div>
                         <span class="bold">Inputs :</span> (<a href="details.html" target="_blank">details</a>)
-                        <div id="inputs" class="infos"></div>
+                        <div id="inputs" class="infos mt-5"></div>
                     </div>
                     <div class="mt-10">
-                        <span class="bold">Outputs :</span> (<a href="details.html" target="_blank">details</a>)
-                        <div id="outputs" class="infos"></div>
+                        <span class="bold">Outputs :</span>
+                        select <a href="#" id="select-none">none</a> <a href="#" id="select-all">all</a>
+                        (<a href="details.html" target="_blank">details</a>)
+                        <div id="outputs" class="infos mt-5"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-20">
+            <div class="mt-10">
                 <div class="sysex-msg-grid">
                     <div class="msg-name">
                         Device Identity Request
@@ -331,7 +333,7 @@
                         Arbitrary bytes
                     </div>
                     <div>
-                        <input type="text" class="sysex" id="any-data" />
+                        <input type="text" class="sysex" id="any-data" value="0xFF" />
                     </div>
                     <div>
                         <button title="send an arbitrary message"  id="btSendBytes">Send</button>

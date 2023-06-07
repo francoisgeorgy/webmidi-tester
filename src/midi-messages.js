@@ -1,5 +1,5 @@
 
-import {logMessageOut} from "./main.js";
+import {logError, logMessageOut} from "./main.js";
 import {MIDI, outputById, outputs} from "./midi.js";
 import {hs} from "./utils.js";
 
@@ -26,7 +26,7 @@ const SYSEX_END = 0xF7;
 const SYSEX_ID_REQUEST = [0x7E, 0x00, 0x06, 0x01];
 
 export function send(messageMode, messageType, channel, data1, data2) {
-    console.log("send", messageMode, messageType, channel, data1, data2);
+    // console.log("send", messageMode, messageType, channel, data1, data2);
     if (!(messageMode in MIDI_MESSAGE)) {
         console.warn('invalid message mode', messageMode);
         return;
@@ -70,7 +70,6 @@ export function sendChannelMessage(channel, message, data1, data2) {
  * @returns {Uint8Array}
  */
 export function sendSysex(data) {
-
     _send(new Uint8Array([
         SYSEX_START,
         ...(data.filter(b => b !== SYSEX_START && b !== SYSEX_END)
@@ -101,14 +100,22 @@ export function sendDeviceIdRequest() {
  * @param {Uint8Array} data
  */
 function _send(data) {
+    if (data.length === 0) {
+        logError("no data to send");
+        return;
+    }
     for (const id in outputs) {
         if (!outputs[id].enabled) {
             continue;
         }
         const port = outputById(id);
         if (port) {
-            logMessageOut(`[${hs(data)}] ${port.name}`);
-            port.send(data);
+            try {
+                port.send(data);
+                logMessageOut(`[${hs(data)}] ${port.name}`);
+            } catch (error) {
+                logError(`invalid data`);
+            }
         } else {
             console.warn(`output port ${id} not found`);
         }

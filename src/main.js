@@ -49,6 +49,22 @@ function onClickBtClearMessages() {
     clearPorts("logentries");
 }
 
+function selectAllOutputs() {
+    for (const id in outputs) {
+        outputs[id].enabled = true;
+    }
+    printInputsAndOutputs();
+    return false;
+}
+
+function unselectAllOutputs() {
+    for (const id in outputs) {
+        outputs[id].enabled = false;
+    }
+    printInputsAndOutputs();
+    return false;
+}
+
 function setupUIHandler() {
     $('#outputs').on('click', 'input.port-enable', onClickPortEnable);
     $('.btSend').on('click', onClickBtSend);
@@ -56,7 +72,8 @@ function setupUIHandler() {
     $('#btSendSysex').on('click', onClickBtSendSysex);
     $('#btSendBytes').on('click', onClickBtSendBytes);
     $('#btClearMessages').on('click', onClickBtClearMessages);
-
+    $('#select-all').on('click', selectAllOutputs);
+    $('#select-none').on('click', unselectAllOutputs);
 }
 
 //=============================================================================
@@ -87,14 +104,14 @@ export function logMessageOut(description) {
 }
 
 export function logError(description) {
-    printEvent("ERROR " + description, 'entry-error');
+    printEvent("ERROR   " + description, 'entry-error');
 }
 
 //=============================================================================
 //
 //-----------------------------------------------------------------------------
 
-export function listInputsAndOutputs() {
+export function printInputsAndOutputs() {
     if (MIDI === null) return;
     clearPorts("outputs");
     clearPorts("inputs");
@@ -102,7 +119,7 @@ export function listInputsAndOutputs() {
     MIDI.outputs.forEach(function(port, key) {
         document.getElementById("outputs").insertAdjacentHTML("beforeend",
             `<div class=""><input type="checkbox" class="port-enable" data-port-id="${encodeURIComponent(port.id)}" 
-                      checked="${port.enabled ? 'true' : 'false'}">${port.manufacturer} ${port.name} (ID ${port.id})</div>`
+                      ${outputs[port.id]?.enabled ? 'checked' : ''}>${port.manufacturer} ${port.name} (ID ${port.id})</div>`
         );
     });
     MIDI.inputs.forEach(function(port, key) {
