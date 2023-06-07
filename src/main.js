@@ -125,7 +125,7 @@ function main() {
     setupUIHandler();
 }
 
-function whenReadyDo(callback) {
+function whenReadyCall(callback) {
     if (document.readyState !== "loading") {
         callback();
     } else {
@@ -133,4 +133,4 @@ function whenReadyDo(callback) {
     }
 }
 
-whenReadyDo(main);
+whenReadyCall(main);
