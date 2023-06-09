@@ -1,5 +1,6 @@
 import {hs} from "./utils.js";
 import {printInputsAndOutputs, logError, logEvent, logMessageIn, logMessageOut} from "./main.js";
+import {parseMessage} from "./midi-messages";
 // import {loadPreferences, savePreferences} from "./preferences.js";
 
 /**
@@ -217,7 +218,8 @@ function outputDebugLabel(id) {
  */
 function onMidiMessage(message) {
     if (message instanceof MIDIMessageEvent) {
-        logMessageIn(`[${hs(message.data)}] ${message.currentTarget.name}`);
+        // logMessageIn(`[${hs(message.data)}] ${message.currentTarget.name}`);
+        logMessageIn(`[${hs(message.data)}] ${parseMessage(message)}`);
     }
 }
 
