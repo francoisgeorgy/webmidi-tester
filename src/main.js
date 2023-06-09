@@ -137,7 +137,8 @@ function main() {
         navigator.requestMIDIAccess({sysex: true}).then(onMIDISuccess, onMIDIFailure);
     } else {
         logError("Your browser does not support WebMIDI.");
-        document.getElementById("unsupported").classList.remove('hide');
+        document.getElementById("unsupported").classList.add('show');
+
     }
     setupUIHandler();
 }
