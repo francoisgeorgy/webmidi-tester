@@ -9,7 +9,8 @@ export var MIDI = null;
 
 var inputInUse;
 var outputInUse;
-var inputs = {};
+// var inputs = {};
+export var inputs = {};
 export var outputs = {};
 
 /**
@@ -53,7 +54,7 @@ function updateInputsOutputs(event) {
                 id: input.id,
                 name: input.name ?? '',
                 connection: input.connection,
-                enabled: false
+                enabled: true
             };
             input.onmidimessage = onMidiMessage;
         }
