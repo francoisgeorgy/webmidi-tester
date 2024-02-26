@@ -91,13 +91,16 @@ function onClickBtSendSysex() {
 // }
 
 function onClickBtSendBytes() {
-    sendAny(parseNumbersString($("#any-data").val()));
+
+    const data = parseNumbersString($("#any-data").val(), isDefaultHex());
+
+    sendAny(data);
 
     let n = $('#message-any-name').val() || '';
     // console.log('onClickBtSendSysex', n);
 
     if (n.trim()) {
-        saveMessage(n, parseNumbersString($("#any-data").val()));
+        saveMessage(n, data);
         // $.localStorage.setItem(n, parseNumbersString($("#sysex-data").val()));
         displaySavedMessages();
 
@@ -146,6 +149,38 @@ function unselectAllOutputs() {
     return false;
 }
 
+function isDefaultHex() {
+    return $('#check-hex').is(':checked');
+}
+
+function makeSysex() {
+    // const sysex_enabled = $(this).is(':checked');
+    let s = $("#any-data").val();
+    // console.log("any-data", s);
+    $("#any-data").val(`${isDefaultHex() ? '':'0x'}F0 ${s} ${isDefaultHex() ? '':'0x'}F7`);
+    $("#any-data").focus();
+    const pos = isDefaultHex() ? 3 : 5;
+    let c = document.getElementById("any-data");
+    c.selectionStart = pos;
+    c.selectionEnd = pos;
+    // $("#any-data").selectionStart = 5;
+    // $("#any-data").selectionEnd = 5;
+}
+
+function applyMask() {
+    const mask_enabled = $(this).is(':checked');
+    const data = parseNumbersString($("#any-data").val(), isDefaultHex()).map(e => e & 0x7F);
+    const s = isDefaultHex() ? hs(data) : hs0x(data);
+    $("#any-data").val(s);
+}
+
+function toggleHex() {
+    const hex_enabled = $(this).is(':checked');
+    const data = parseNumbersString($("#any-data").val(), !isDefaultHex());
+    const s = isDefaultHex() ? hs(data) : hs0x(data);
+    $("#any-data").val(s);
+}
+
 function setupUIHandler() {
 
     console.log("setupUIHandler");
@@ -156,8 +191,10 @@ function setupUIHandler() {
     $('input.slider').on('change', onSliderChange);
     $('input.slider').on('input', onSliderInput);
     $('#btSendIDRequest').on('click', onClickBtSendIDRequest);
-    $('#btSendSysex').on('click', onClickBtSendSysex);
+
+    // $('#btSendSysex').on('click', onClickBtSendSysex);
     $('#btSendBytes').on('click', onClickBtSendBytes);
+
     // $('#btSendSysexAndSave').on('click', onClickBtSendSysexAndSave);
     // $('#btSendBytesAndSave').on('click', onClickBtSendBytesAndSave);
     $('#btClearMessages').on('click', onClickBtClearMessages);
@@ -167,6 +204,12 @@ function setupUIHandler() {
     $('#select-outputs-none').on('click', unselectAllOutputs);
 
     $('#clear-saved-messages').on('click', clearSavedMessages);
+
+    // $('#check-sysex').on('click', toggleSysex);
+    $('#make-sysex').on('click', makeSysex);
+    $('#apply-mask').on('click', applyMask);
+    // $('#check-mask').on('click', toggleMask);
+    $('#check-hex').on('click', toggleHex);
 
     displaySavedMessages();
 
@@ -178,10 +221,12 @@ function setupUIHandler() {
 //-----------------------------------------------------------------------------
 
 function saveMessage(name, data){
+    console.log("saveMessage", name);
     let messages = getMessages();
     const i = messages.findIndex((element) => element['name'] === name);
+    console.log('i', i, messages);
     if (data == null) {
-        if (i >= 0) delete messages[i];
+        if (i >= 0) messages.splice(i, 1);
     } else {
         if (i >= 0) {
             messages[i] = {name, data, deletable: true};
@@ -189,23 +234,28 @@ function saveMessage(name, data){
             messages.push({name, data, deletable: true});
         }
     }
+    console.log(messages);
     localStorage.setItem('studiocode.dev.webmidi.tester.messages', JSON.stringify(messages));
 }
 
 function getMessages() {
-    const messages = JSON.parse(localStorage.getItem('studiocode.dev.webmidi.tester.messages') || "[]");
-    return [
-        {
-            name:'Device ID Request',
-            data: [
-                SYSEX_START,
-                ...SYSEX_ID_REQUEST,
-                SYSEX_END
-            ],
-            deletable: false
-        },
-        ...messages
-    ];
+    // return JSON.parse(localStorage.getItem('studiocode.dev.webmidi.tester.messages') || "[]");
+    const data = JSON.parse(localStorage.getItem('studiocode.dev.webmidi.tester.messages') || "[]");
+    if (data.length === 0) {
+        return [
+            {
+                name:'Device ID Request',
+                data: [
+                    SYSEX_START,
+                    ...SYSEX_ID_REQUEST,
+                    SYSEX_END
+                ],
+                deletable: false
+            }
+        ];
+    } else {
+        return data;
+    }
 }
 
 function getSavedMessageName(event) {
@@ -261,29 +311,43 @@ function displaySavedMessages() {
 
     console.log("displaySavedMessages");
 
-    let messages = getMessages();
+    // let messages = [
+    //     {
+    //         name:'Device ID Request',
+    //         data: [
+    //             SYSEX_START,
+    //             ...SYSEX_ID_REQUEST,
+    //             SYSEX_END
+    //         ],
+    //         deletable: false
+    //     },
+    //     ...getMessages()
+    // ];
+
+    const messages = getMessages();
 
     document.getElementById("saved-messages").innerHTML = "";
 
     // for (const [name, data] of Object.entries(messages)) {
     for (const message of messages) {
         // console.log(name, data);
+        if (message === null) continue;
         const name = message['name'];
         if (message['deletable']) {
             document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
                 `<div>${name}</div>
                 <div class="data">${hs(message['data'])}</div>
-                <div><button class="saved-msg-send" data-saved-msg="${name}">send</button></div>
                 <div><button class="saved-msg-edit" data-saved-msg="${name}">edit</button></div>
-                <div><button class="saved-msg-delete" data-saved-msg="${name}">delete</button></div>`
+                <div><button class="saved-msg-delete" data-saved-msg="${name}">delete</button></div>
+                <div><button class="saved-msg-send" data-saved-msg="${name}">send</button></div>`
             );
         } else {
             document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
                 `<div>${name}</div>
                 <div class="data">${hs(message['data'])}</div>
-                <div><button class="saved-msg-send" data-saved-msg="${name}">send</button></div>
                 <div><button class="saved-msg-edit" data-saved-msg="${name}">edit</button></div>
-                <div></div>`
+                <div></div>
+                <div><button class="saved-msg-send" data-saved-msg="${name}">send</button></div>`
             );
         }
         // document.getElementById("saved-messages").insertAdjacentHTML("beforeend",

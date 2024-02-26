@@ -106,11 +106,12 @@ main {
 
 .sysex-msg-grid {
     display: grid;
-    grid-template-columns: 140px auto auto;
+    /*grid-template-columns: 140px auto auto;*/
+    grid-template-columns: auto auto;
     grid-column-gap: 0.5rem;
     grid-row-gap: 0.25rem;
     justify-content: start;
-    justify-items: end;
+    /*justify-items: end;*/
 }
 
 .grid-col-span-2 {
@@ -148,7 +149,7 @@ input.data {
 }
 
 input.sysex {
-    width: 30rem;
+    width: 40rem;
 }
 
 .events {

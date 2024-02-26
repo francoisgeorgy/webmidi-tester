@@ -77,9 +77,9 @@ export function fromHexString(str, sep) {
     return a;
 }
 
-export function parseNumbersString(str) {
+export function parseNumbersString(str, defaultHex = false) {
     let data = str.trim().split(" ").map(s => {
-        let n = parseInt(s);
+        let n = defaultHex ? parseInt(s, 16) : parseInt(s);
         return isNaN(n) ? null : n;
     }).filter(n => n !== null);
     return data;

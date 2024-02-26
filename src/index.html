@@ -32,15 +32,27 @@
                 <div class="Xpanel">
                     <div class="flex-row ports">
                         <div class="panel">
-                            <span class="bold">Inputs :</span>
-                            select <a href="#" id="select-inputs-none">none</a> <a href="#" id="select-inputs-all">all</a>
-                            (<a href="details.html" target="_blank">details</a>)
+                            <div class="flex-row space-between">
+                                <div>
+                                    <span class="bold">Inputs :</span>
+                                    select <a href="#" id="select-inputs-none">none</a> <a href="#" id="select-inputs-all">all</a>
+                                </div>
+                                <div class="text-small">
+                                    (<a href="details.html" target="_blank">details</a>)
+                                </div>
+                            </div>
                             <div id="inputs" class="infos mt-5"></div>
                         </div>
                         <div class="panel">
-                            <span class="bold">Outputs :</span>
-                            select <a href="#" id="select-outputs-none">none</a> <a href="#" id="select-outputs-all">all</a>
-                            (<a href="details.html" target="_blank">details</a>)
+                            <div class="flex-row space-between">
+                                <div>
+                                    <span class="bold">Outputs :</span>
+                                    select <a href="#" id="select-outputs-none">none</a> <a href="#" id="select-outputs-all">all</a>
+                                </div>
+                                <div class="text-small">
+                                    (<a href="details.html" target="_blank">details</a>)
+                                </div>
+                            </div>
                             <div id="outputs" class="infos mt-5"></div>
                         </div>
                     </div>
@@ -293,7 +305,12 @@
                     </div>
                 </div>
                 <div class="panel">
-                    <div class="Xmt-10">
+                    <div class="flex-row space-between">
+                        <div class="bold mb-10">Any messages :</div>
+                        <div class="text-small light">Use <code>0x</code> prefix for hex or check "default hex"</div>
+                    </div>
+
+<!--                    <div class="Xmt-10">-->
                         <div class="sysex-msg-grid">
 <!--
                             <div class="msg-name">
@@ -305,37 +322,56 @@
                             <div>
                             </div>
 -->
+<!--
                             <div class="msg-name">
                                 SysEx
                             </div>
                             <div>
-                                <input type="text" class="sysex" id="sysex-data" />
+                                0xF0 <input type="text" class="sysex" id="sysex-data" /> 0xF7
                             </div>
                             <div>
                                 <button title="send a SysEx message" id="btSendSysex">Send</button>
-                                <!--                        <button title="send a SysEx message" id="btSendSysexAndSave">Send and Save</button>-->
                                 <span class="ml-10">save as <input type="text" class="message-name" id="message-sysex-name" /></span>
                             </div>
+-->
+<!--
                             <div class="msg-name">
                                 Arbitrary bytes
                             </div>
+-->
                             <div>
                                 <input type="text" class="sysex" id="any-data" />
                             </div>
                             <div>
                                 <button title="send an arbitrary message" id="btSendBytes">Send</button>
                                 <!--                        <button title="send an arbitrary message" id="btSendBytesAndSave">Send and save</button>-->
-                                <span class="ml-10">save as <input type="text" class="message-name" id="message-any-name" /></span>
+<!--                                <span class="ml-10">save as <input type="text" class="message-name" id="message-any-name" /></span>-->
                             </div>
+
+<!--                            <div></div>-->
+                            <div class="flex-row space-between">
+                                <div>
+<!--                                    <input type="checkbox" id="check-sysex">sysex-->
+                                    <button type="button" id="make-sysex">sysex</button>
+                                    <button type="button" id="apply-mask">mask 0x7F</button>
+<!--                                    <input type="checkbox" id="check-mask">apply mask 0x7F-->
+                                    <input type="checkbox" id="check-hex">default hex
+                                </div>
+                                <div>
+                                    save as <input type="text" class="message-name" id="message-any-name" />
+                                </div>
+                            </div>
+                            <div></div>
+
                         </div>
 
                         <div class="mt-5">
-                            <div class="light">saved messages :</div>
+                            <div class="light text-small">saved messages :</div>
                             <div id="saved-messages" class="saved-msgs-grid mt-5"></div>
                             <!--                    <button id="clear-saved-messages" type="button">clear</button>-->
                         </div>
 
-                    </div>
+<!--                    </div>-->
                 </div>
             </div>
 
