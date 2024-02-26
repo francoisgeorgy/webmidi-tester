@@ -20,10 +20,10 @@ const MIDI_MESSAGE = {
     }
 }
 
-const SYSEX_START = 0xF0;
-const SYSEX_END = 0xF7;
+export const SYSEX_START = 0xF0;
+export const SYSEX_END = 0xF7;
 
-const SYSEX_ID_REQUEST = [0x7E, 0x00, 0x06, 0x01];
+export const SYSEX_ID_REQUEST = [0x7E, 0x00, 0x06, 0x01];
 
 export function send(messageMode, messageType, channel, data1, data2) {
     // console.log("send", messageMode, messageType, channel, data1, data2);

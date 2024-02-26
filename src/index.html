@@ -21,352 +21,343 @@
         <div class="title">
             WebMIDI Tester
         </div>
-        <div class="grow align-end mr-10">
-            v0.1 by <a href="https://studiocode.dev/" target="_blank" rel="noopener noreferrer">StudioCode.dev</a>
+        <div class="grow align-end">
+            v0.2 by <a href="https://studiocode.dev/" target="_blank" rel="noopener noreferrer">StudioCode.dev</a>
         </div>
     </header>
     <main>
-        <div class="flex-grow mt-10">
+        <div class="flex-row">
 
-            <div class="flex-row ports">
-                <div>
-                    <span class="bold">Inputs :</span>
-                    (<a href="details.html" target="_blank">details</a>)
-                    select <a href="#" id="select-inputs-none">none</a> <a href="#" id="select-inputs-all">all</a>
-                    <div id="inputs" class="infos mt-5"></div>
+            <div>
+                <div class="Xpanel">
+                    <div class="flex-row ports">
+                        <div class="panel">
+                            <span class="bold">Inputs :</span>
+                            select <a href="#" id="select-inputs-none">none</a> <a href="#" id="select-inputs-all">all</a>
+                            (<a href="details.html" target="_blank">details</a>)
+                            <div id="inputs" class="infos mt-5"></div>
+                        </div>
+                        <div class="panel">
+                            <span class="bold">Outputs :</span>
+                            select <a href="#" id="select-outputs-none">none</a> <a href="#" id="select-outputs-all">all</a>
+                            (<a href="details.html" target="_blank">details</a>)
+                            <div id="outputs" class="infos mt-5"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="ml-20">
-                    <span class="bold">Outputs :</span>
-                    select <a href="#" id="select-outputs-none">none</a> <a href="#" id="select-outputs-all">all</a>
-                    (<a href="details.html" target="_blank">details</a>)
-                    <div id="outputs" class="infos mt-5"></div>
+                <div class="panel">
+                    <div class="Xmt-20 voice-msg-grid">
+
+                        <div class="grid-col-span-2">channel</div>
+                        <div>data 1</div>
+                        <div>data 2</div>
+                        <div class="grid-col-span-2"></div>
+
+                        <div class="msg-name">
+                            Note Off
+                        </div>
+                        <div>
+                            <select class="data data-ch" id="NOTE_OFF-ch">
+                                <option value="0">1</option>
+                                <option value="1">2</option>
+                                <option value="2">3</option>
+                                <option value="3">4</option>
+                                <option value="4">5</option>
+                                <option value="5">6</option>
+                                <option value="6">7</option>
+                                <option value="7">8</option>
+                                <option value="8">9</option>
+                                <option value="9">10</option>
+                                <option value="10">11</option>
+                                <option value="11">12</option>
+                                <option value="12">13</option>
+                                <option value="13">14</option>
+                                <option value="14">15</option>
+                                <option value="15">16</option>
+                            </select>
+                        </div>
+                        <div>
+                            note <input type="text" class="data data1" id="NOTE_OFF-data1" value="0" />
+                        </div>
+                        <div>
+                            velocity <input type="text" class="data data2" id="NOTE_OFF-data2" value="0" />
+                        </div>
+                        <div>
+                            <button title="send a Note OFF message" class="btSend"
+                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NOTE_OFF">Send</button>
+                        </div>
+                        <div></div>
+
+                        <div class="msg-name">
+                            Note On
+                        </div>
+                        <div>
+                            <select class="data data-ch" id="NOTE_ON-ch">
+                                <option value="0">1</option>
+                                <option value="1">2</option>
+                                <option value="2">3</option>
+                                <option value="3">4</option>
+                                <option value="4">5</option>
+                                <option value="5">6</option>
+                                <option value="6">7</option>
+                                <option value="7">8</option>
+                                <option value="8">9</option>
+                                <option value="9">10</option>
+                                <option value="10">11</option>
+                                <option value="11">12</option>
+                                <option value="12">13</option>
+                                <option value="13">14</option>
+                                <option value="14">15</option>
+                                <option value="15">16</option>
+                            </select>
+                        </div>
+                        <div>
+                            note <input type="text" class="data data1" id="NOTE_ON-data1" value="0" />
+                        </div>
+                        <div>
+                            velocity <input type="text" class="data data2" id="NOTE_ON-data2" value="127" />
+                        </div>
+                        <div>
+                            <button title="send a Note ON message" class="btSend"
+                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NOTE_ON">Send</button>
+                        </div>
+                        <div></div>
+
+                        <div class="msg-name">Poly. Key Pres.</div>
+                        <div>
+                            <select class="data data-ch" id="POLY_PRESSURE-ch">
+                                <option value="0">1</option>
+                                <option value="1">2</option>
+                                <option value="2">3</option>
+                                <option value="3">4</option>
+                                <option value="4">5</option>
+                                <option value="5">6</option>
+                                <option value="6">7</option>
+                                <option value="7">8</option>
+                                <option value="8">9</option>
+                                <option value="9">10</option>
+                                <option value="10">11</option>
+                                <option value="11">12</option>
+                                <option value="12">13</option>
+                                <option value="13">14</option>
+                                <option value="14">15</option>
+                                <option value="15">16</option>
+                            </select>
+                        </div>
+                        <div>
+                            note <input type="text" class="data data1" id="POLY_PRESSURE-data1" value="0" />
+                        </div>
+                        <div>
+                            pressure <input type="text" class="data data2" id="POLY_PRESSURE-data2" value="0" />
+                        </div>
+                        <div>
+                            <button title="send a Polyphonic Key Pressure (Aftertouch) message" class="btSend"
+                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="POLY_PRESSURE">Send</button>
+                        </div>
+                        <div></div>
+
+                        <div class="msg-name">Controller (CC)</div>
+                        <div>
+                            <select class="data data-ch" id="CC-ch">
+                                <option value="0">1</option>
+                                <option value="1">2</option>
+                                <option value="2">3</option>
+                                <option value="3">4</option>
+                                <option value="4">5</option>
+                                <option value="5">6</option>
+                                <option value="6">7</option>
+                                <option value="7">8</option>
+                                <option value="8">9</option>
+                                <option value="9">10</option>
+                                <option value="10">11</option>
+                                <option value="11">12</option>
+                                <option value="12">13</option>
+                                <option value="13">14</option>
+                                <option value="14">15</option>
+                                <option value="15">16</option>
+                            </select>
+                        </div>
+                        <div>
+                            controller <input type="text" class="data data1" id="CC-data1" value="0" />
+                        </div>
+                        <div>
+                            value <input type="text" class="data data2" id="CC-data2" value="0" />
+                        </div>
+                        <div>
+                            <button title="send a Continuous Controller message" class="btSend"
+                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CC">Send</button>
+                        </div>
+                        <div>
+                            <input type="range" min="0" max="127" step="1" class="slider" />
+                        </div>
+
+                        <div class="msg-name">Prog. Change (PC)</div>
+                        <div>
+                            <select class="data data-ch" id="PC-ch">
+                                <option value="0">1</option>
+                                <option value="1">2</option>
+                                <option value="2">3</option>
+                                <option value="3">4</option>
+                                <option value="4">5</option>
+                                <option value="5">6</option>
+                                <option value="6">7</option>
+                                <option value="7">8</option>
+                                <option value="8">9</option>
+                                <option value="9">10</option>
+                                <option value="10">11</option>
+                                <option value="11">12</option>
+                                <option value="12">13</option>
+                                <option value="13">14</option>
+                                <option value="14">15</option>
+                                <option value="15">16</option>
+                            </select>
+                        </div>
+                        <div>
+                            program <input type="text" class="data data1" id="PC-data1" value="0" />
+                        </div>
+                        <div></div>
+                        <div>
+                            <button title="send a Program Change message" class="btSend"
+                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PC">Send</button>
+                        </div>
+                        <div></div>
+
+                        <div class="msg-name">Channel Pres.</div>
+                        <div>
+                            <select class="data data-ch" id="CHANNEL_PRESSURE-ch">
+                                <option value="0">1</option>
+                                <option value="1">2</option>
+                                <option value="2">3</option>
+                                <option value="3">4</option>
+                                <option value="4">5</option>
+                                <option value="5">6</option>
+                                <option value="6">7</option>
+                                <option value="7">8</option>
+                                <option value="8">9</option>
+                                <option value="9">10</option>
+                                <option value="10">11</option>
+                                <option value="11">12</option>
+                                <option value="12">13</option>
+                                <option value="13">14</option>
+                                <option value="14">15</option>
+                                <option value="15">16</option>
+                            </select>
+                        </div>
+                        <div>
+                            pressure <input type="text" class="data data1" id="CHANNEL_PRESSURE-data1" value="0" />
+                        </div>
+                        <div>
+                        </div>
+                        <div>
+                            <button title="send a Channel Pressure (Aftertouch) message" class="btSend"
+                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CHANNEL_PRESSURE">Send</button>
+                        </div>
+                        <div>
+                            <input type="range" min="0" max="127" step="1" class="slider" />
+                        </div>
+
+                        <div class="msg-name">Pitch Bend</div>
+                        <div>
+                            <select class="data data-ch" id="PITCH_BEND-ch">
+                                <option value="0">1</option>
+                                <option value="1">2</option>
+                                <option value="2">3</option>
+                                <option value="3">4</option>
+                                <option value="4">5</option>
+                                <option value="5">6</option>
+                                <option value="6">7</option>
+                                <option value="7">8</option>
+                                <option value="8">9</option>
+                                <option value="9">10</option>
+                                <option value="10">11</option>
+                                <option value="11">12</option>
+                                <option value="12">13</option>
+                                <option value="13">14</option>
+                                <option value="14">15</option>
+                                <option value="15">16</option>
+                            </select>
+                        </div>
+                        <div>
+                            LSB <input type="text" class="data data1" id="PITCH_BEND-data1" value="0" />
+                        </div>
+                        <div>
+                            MSB <input type="text" class="data data2" id="PITCH_BEND-data2" value="64" />
+                        </div>
+                        <div>
+                            <button title="send a Pitch Bend message" class="btSend"
+                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PITCH_BEND">Send</button>
+                        </div>
+                        <div>
+                            <input type="range" min="0" max="16383" step="1" class="slider" />
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="Xmt-10">
+                        <div class="sysex-msg-grid">
+<!--
+                            <div class="msg-name">
+                                Device Identity Request
+                            </div>
+                            <div class="justify-start">
+                                <button title="send a SysEx message"  id="btSendIDRequest">Send</button>
+                            </div>
+                            <div>
+                            </div>
+-->
+                            <div class="msg-name">
+                                SysEx
+                            </div>
+                            <div>
+                                <input type="text" class="sysex" id="sysex-data" />
+                            </div>
+                            <div>
+                                <button title="send a SysEx message" id="btSendSysex">Send</button>
+                                <!--                        <button title="send a SysEx message" id="btSendSysexAndSave">Send and Save</button>-->
+                                <span class="ml-10">save as <input type="text" class="message-name" id="message-sysex-name" /></span>
+                            </div>
+                            <div class="msg-name">
+                                Arbitrary bytes
+                            </div>
+                            <div>
+                                <input type="text" class="sysex" id="any-data" />
+                            </div>
+                            <div>
+                                <button title="send an arbitrary message" id="btSendBytes">Send</button>
+                                <!--                        <button title="send an arbitrary message" id="btSendBytesAndSave">Send and save</button>-->
+                                <span class="ml-10">save as <input type="text" class="message-name" id="message-any-name" /></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <div class="light">saved messages :</div>
+                            <div id="saved-messages" class="saved-msgs-grid mt-5"></div>
+                            <!--                    <button id="clear-saved-messages" type="button">clear</button>-->
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
-<!--            <div class="flex-row">-->
-                <div class="mt-20 voice-msg-grid">
+            <div class="panel flex-grow">
 
-                    <div class="grid-col-span-2">channel</div>
-                    <div>data 1</div>
-                    <div>data 2</div>
-                    <div class="grid-col-span-2"></div>
-
-                    <div class="msg-name">
-                        Note Off
-                    </div>
+                <div class="block-title Xborder-bottom Xmt-20 Xmb-5 flex-row space-between">
                     <div>
-                        <select class="data data-ch" id="NOTE_OFF-ch">
-                            <option value="0">1</option>
-                            <option value="1">2</option>
-                            <option value="2">3</option>
-                            <option value="3">4</option>
-                            <option value="4">5</option>
-                            <option value="5">6</option>
-                            <option value="6">7</option>
-                            <option value="7">8</option>
-                            <option value="8">9</option>
-                            <option value="9">10</option>
-                            <option value="10">11</option>
-                            <option value="11">12</option>
-                            <option value="12">13</option>
-                            <option value="13">14</option>
-                            <option value="14">15</option>
-                            <option value="15">16</option>
-                        </select>
+                    <span class="bold">Events and Messages</span> <button id="btClearMessages">clear</button>
                     </div>
-                    <div>
-                        note <input type="text" class="data data1" id="NOTE_OFF-data1" value="0" />
-                    </div>
-                    <div>
-                        velocity <input type="text" class="data data2" id="NOTE_OFF-data2" value="0" />
-                    </div>
-                    <div>
-                        <button title="send a Note OFF message" class="btSend"
-                                data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NOTE_OFF">Send</button>
-                    </div>
-                    <div></div>
-
-                    <div class="msg-name">
-                        Note On
-                    </div>
-                    <div>
-                        <select class="data data-ch" id="NOTE_ON-ch">
-                            <option value="0">1</option>
-                            <option value="1">2</option>
-                            <option value="2">3</option>
-                            <option value="3">4</option>
-                            <option value="4">5</option>
-                            <option value="5">6</option>
-                            <option value="6">7</option>
-                            <option value="7">8</option>
-                            <option value="8">9</option>
-                            <option value="9">10</option>
-                            <option value="10">11</option>
-                            <option value="11">12</option>
-                            <option value="12">13</option>
-                            <option value="13">14</option>
-                            <option value="14">15</option>
-                            <option value="15">16</option>
-                        </select>
-                    </div>
-                    <div>
-                        note <input type="text" class="data data1" id="NOTE_ON-data1" value="0" />
-                    </div>
-                    <div>
-                        velocity <input type="text" class="data data2" id="NOTE_ON-data2" value="127" />
-                    </div>
-                    <div>
-                        <button title="send a Note ON message" class="btSend"
-                                data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NOTE_ON">Send</button>
-                    </div>
-                    <div></div>
-
-                    <div class="msg-name">Poly. Key Pres.</div>
-                    <div>
-                        <select class="data data-ch" id="POLY_PRESSURE-ch">
-                            <option value="0">1</option>
-                            <option value="1">2</option>
-                            <option value="2">3</option>
-                            <option value="3">4</option>
-                            <option value="4">5</option>
-                            <option value="5">6</option>
-                            <option value="6">7</option>
-                            <option value="7">8</option>
-                            <option value="8">9</option>
-                            <option value="9">10</option>
-                            <option value="10">11</option>
-                            <option value="11">12</option>
-                            <option value="12">13</option>
-                            <option value="13">14</option>
-                            <option value="14">15</option>
-                            <option value="15">16</option>
-                        </select>
-                    </div>
-                    <div>
-                        note <input type="text" class="data data1" id="POLY_PRESSURE-data1" value="0" />
-                    </div>
-                    <div>
-                        pressure <input type="text" class="data data2" id="POLY_PRESSURE-data2" value="0" />
-                    </div>
-                    <div>
-                        <button title="send a Polyphonic Key Pressure (Aftertouch) message" class="btSend"
-                                data-msg-mode="CHANNEL_MESSAGE" data-msg-type="POLY_PRESSURE">Send</button>
-                    </div>
-                    <div></div>
-
-                    <div class="msg-name">Controller (CC)</div>
-                    <div>
-                        <select class="data data-ch" id="CC-ch">
-                            <option value="0">1</option>
-                            <option value="1">2</option>
-                            <option value="2">3</option>
-                            <option value="3">4</option>
-                            <option value="4">5</option>
-                            <option value="5">6</option>
-                            <option value="6">7</option>
-                            <option value="7">8</option>
-                            <option value="8">9</option>
-                            <option value="9">10</option>
-                            <option value="10">11</option>
-                            <option value="11">12</option>
-                            <option value="12">13</option>
-                            <option value="13">14</option>
-                            <option value="14">15</option>
-                            <option value="15">16</option>
-                        </select>
-                    </div>
-                    <div>
-                        controller <input type="text" class="data data1" id="CC-data1" value="0" />
-                    </div>
-                    <div>
-                        value <input type="text" class="data data2" id="CC-data2" value="0" />
-                    </div>
-                    <div>
-                        <button title="send a Continuous Controller message" class="btSend"
-                                data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CC">Send</button>
-                    </div>
-                    <div>
-                        <input type="range" min="0" max="127" step="1" class="slider" />
-                    </div>
-
-                    <div class="msg-name">Prog. Change (PC)</div>
-                    <div>
-                        <select class="data data-ch" id="PC-ch">
-                            <option value="0">1</option>
-                            <option value="1">2</option>
-                            <option value="2">3</option>
-                            <option value="3">4</option>
-                            <option value="4">5</option>
-                            <option value="5">6</option>
-                            <option value="6">7</option>
-                            <option value="7">8</option>
-                            <option value="8">9</option>
-                            <option value="9">10</option>
-                            <option value="10">11</option>
-                            <option value="11">12</option>
-                            <option value="12">13</option>
-                            <option value="13">14</option>
-                            <option value="14">15</option>
-                            <option value="15">16</option>
-                        </select>
-                    </div>
-                    <div>
-                        program <input type="text" class="data data1" id="PC-data1" value="0" />
-                    </div>
-                    <div></div>
-                    <div>
-                        <button title="send a Program Change message" class="btSend"
-                                data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PC">Send</button>
-                    </div>
-                    <div></div>
-
-                    <div class="msg-name">Channel Pres.</div>
-                    <div>
-                        <select class="data data-ch" id="CHANNEL_PRESSURE-ch">
-                            <option value="0">1</option>
-                            <option value="1">2</option>
-                            <option value="2">3</option>
-                            <option value="3">4</option>
-                            <option value="4">5</option>
-                            <option value="5">6</option>
-                            <option value="6">7</option>
-                            <option value="7">8</option>
-                            <option value="8">9</option>
-                            <option value="9">10</option>
-                            <option value="10">11</option>
-                            <option value="11">12</option>
-                            <option value="12">13</option>
-                            <option value="13">14</option>
-                            <option value="14">15</option>
-                            <option value="15">16</option>
-                        </select>
-                    </div>
-                    <div>
-                        pressure <input type="text" class="data data1" id="CHANNEL_PRESSURE-data1" value="0" />
-                    </div>
-                    <div>
-                    </div>
-                    <div>
-                        <button title="send a Channel Pressure (Aftertouch) message" class="btSend"
-                                data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CHANNEL_PRESSURE">Send</button>
-                    </div>
-                    <div>
-                        <input type="range" min="0" max="127" step="1" class="slider" />
-                    </div>
-
-                    <div class="msg-name">Pitch Bend</div>
-                    <div>
-                        <select class="data data-ch" id="PITCH_BEND-ch">
-                            <option value="0">1</option>
-                            <option value="1">2</option>
-                            <option value="2">3</option>
-                            <option value="3">4</option>
-                            <option value="4">5</option>
-                            <option value="5">6</option>
-                            <option value="6">7</option>
-                            <option value="7">8</option>
-                            <option value="8">9</option>
-                            <option value="9">10</option>
-                            <option value="10">11</option>
-                            <option value="11">12</option>
-                            <option value="12">13</option>
-                            <option value="13">14</option>
-                            <option value="14">15</option>
-                            <option value="15">16</option>
-                        </select>
-                    </div>
-                    <div>
-                        LSB <input type="text" class="data data1" id="PITCH_BEND-data1" value="0" />
-                    </div>
-                    <div>
-                        MSB <input type="text" class="data data2" id="PITCH_BEND-data2" value="64" />
-                    </div>
-                    <div>
-                        <button title="send a Pitch Bend message" class="btSend"
-                                data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PITCH_BEND">Send</button>
-                    </div>
-                    <div>
-                        <input type="range" min="0" max="16383" step="1" class="slider" />
-                    </div>
-                    <!--
-                                            <div class="msg-name">NRPN</div>
-                                            <div>
-                                                <select class="data data-ch" id="NRPN-ch">
-                                                    <option value="0">1</option>
-                                                    <option value="1">2</option>
-                                                    <option value="2">3</option>
-                                                    <option value="3">4</option>
-                                                    <option value="4">5</option>
-                                                    <option value="5">6</option>
-                                                    <option value="6">7</option>
-                                                    <option value="7">8</option>
-                                                    <option value="8">9</option>
-                                                    <option value="9">10</option>
-                                                    <option value="10">11</option>
-                                                    <option value="11">12</option>
-                                                    <option value="12">13</option>
-                                                    <option value="13">14</option>
-                                                    <option value="14">15</option>
-                                                    <option value="15">16</option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                LSB <input type="text" class="data data1" id="NRPN-data1" value="0" />
-                                            </div>
-                                            <div>
-                                                MSB <input type="text" class="data data2" id="NRPN-data2" value="0" />
-                                            </div>
-                                            <div>
-                                                <button title="send a NRPN message" class="btSend"
-                                                        data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NRPN">Send</button>
-                                            </div>
-                    -->
+                    <span>View in StudioCode.dev <a href="https://studiocode.dev/midi-monitor/" target="_blank">MIDI Monitor</a></span>
                 </div>
-<!--            </div>-->
-
-            <div class="mt-10">
-                <div class="sysex-msg-grid">
-                    <div class="msg-name">
-                        Device Identity Request
+                <div class="messages mt-10">
+                    <div id="logentries">
                     </div>
-                    <div class="justify-start">
-                        <button title="send a SysEx message"  id="btSendIDRequest">Send</button>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="msg-name">
-                        SysEx
-                    </div>
-                    <div>
-                        <input type="text" class="sysex" id="sysex-data" />
-                    </div>
-                    <div>
-                        <button title="send a SysEx message" id="btSendSysex">Send</button>
-<!--                        <button title="send a SysEx message" id="btSendSysexAndSave">Send and Save</button>-->
-                        <span class="ml-10">save as <input type="text" class="message-name" id="message-sysex-name" /></span>
-                    </div>
-                    <div class="msg-name">
-                        Arbitrary bytes
-                    </div>
-                    <div>
-                        <input type="text" class="sysex" id="any-data" value="0xFF" />
-                    </div>
-                    <div>
-                        <button title="send an arbitrary message" id="btSendBytes">Send</button>
-<!--                        <button title="send an arbitrary message" id="btSendBytesAndSave">Send and save</button>-->
-                        <span class="ml-10">save as <input type="text" class="message-name" id="message-any-name" /></span>
-                    </div>
-                </div>
-
-                <div class="mt-5">
-                    <div class="light">saved messages :</div>
-                    <div id="saved-messages" class="saved-msgs-grid mt-5"></div>
-<!--                    <button id="clear-saved-messages" type="button">clear</button>-->
+                    <div id="end-of-list"></div>
                 </div>
 
             </div>
 
         </div>
+
+
 <!--
         <div class="mt-20">
             Messages are sent to the checked outputs.<br />
@@ -374,14 +365,5 @@
         </div>
 -->
     </main>
-    <div class="block-title Xborder-bottom mt-20 mb-5">
-        <span class="bold">Events and Messages</span> <button id="btClearMessages">clear</button>
-        <span class="ml-20"><a href="https://studiocode.dev/midi-monitor/" target="_blank">View in StudioCode.dev MIDI Monitor</a></span>
-    </div>
-    <div class="messages">
-        <div id="logentries">
-        </div>
-        <div id="end-of-list"></div>
-    </div>
 </body>
 </html>

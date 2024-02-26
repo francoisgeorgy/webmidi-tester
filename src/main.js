@@ -1,8 +1,24 @@
 // @ts-check
 /// <reference path="webmidi-types.d.ts"/>
 
-import {MIDI, onMIDIFailure, onMIDISuccess, inputs, outputs} from "./midi.js";
-import {send, sendAny, sendDeviceIdRequest, sendSysex} from "./midi-messages.js";
+import {
+    MIDI,
+    onMIDIFailure,
+    onMIDISuccess,
+    inputs,
+    outputs,
+    saveInputsSelection,
+    saveOutputsSelection
+} from "./midi.js";
+import {
+    send,
+    sendAny,
+    sendDeviceIdRequest,
+    sendSysex,
+    SYSEX_END,
+    SYSEX_ID_REQUEST,
+    SYSEX_START
+} from "./midi-messages.js";
 import {hs, hs0x, parseNumbersString} from "./utils.js";
 
 //=============================================================================
@@ -17,9 +33,18 @@ function clearPorts(elementId) {
 // UI interaction
 //-----------------------------------------------------------------------------
 
-function onClickPortEnable(event) {
+function onClickInputEnable(event) {
     let id = decodeURIComponent($(event.target).data("portId"));
+    console.log("onClickInputEnable", id);
+    inputs[id].enabled = $(this).is(':checked');
+    saveInputsSelection();
+}
+
+function onClickOutputEnable(event) {
+    let id = decodeURIComponent($(event.target).data("portId"));
+    console.log("onClickOutputEnable", id);
     outputs[id].enabled = $(this).is(':checked');
+    saveOutputsSelection();
 }
 
 function onClickBtSend(event) {
@@ -125,7 +150,8 @@ function setupUIHandler() {
 
     console.log("setupUIHandler");
 
-    $('#outputs').on('click', 'input.port-enable', onClickPortEnable);
+    $('#inputs').on('click', 'input.port-enable', onClickInputEnable);
+    $('#outputs').on('click', 'input.port-enable', onClickOutputEnable);
     $('.btSend').on('click', onClickBtSend);
     $('input.slider').on('change', onSliderChange);
     $('input.slider').on('input', onSliderInput);
@@ -146,22 +172,40 @@ function setupUIHandler() {
 
 }
 
+
 //=============================================================================
 // Save
 //-----------------------------------------------------------------------------
 
-function saveMessage(name, data) {
-    let col = getMessages();
-    if (data == null && name in col) {
-        delete col[name];
+function saveMessage(name, data){
+    let messages = getMessages();
+    const i = messages.findIndex((element) => element['name'] === name);
+    if (data == null) {
+        if (i >= 0) delete messages[i];
     } else {
-        col[name] = data;
+        if (i >= 0) {
+            messages[i] = {name, data, deletable: true};
+        } else {
+            messages.push({name, data, deletable: true});
+        }
     }
-    localStorage.setItem('studiocode.dev.webmidi.tester.messages', JSON.stringify(col));
+    localStorage.setItem('studiocode.dev.webmidi.tester.messages', JSON.stringify(messages));
 }
 
 function getMessages() {
-    return JSON.parse(localStorage.getItem('studiocode.dev.webmidi.tester.messages') || "{}");
+    const messages = JSON.parse(localStorage.getItem('studiocode.dev.webmidi.tester.messages') || "[]");
+    return [
+        {
+            name:'Device ID Request',
+            data: [
+                SYSEX_START,
+                ...SYSEX_ID_REQUEST,
+                SYSEX_END
+            ],
+            deletable: false
+        },
+        ...messages
+    ];
 }
 
 function getSavedMessageName(event) {
@@ -173,9 +217,11 @@ function getSavedMessage(event) {
     console.log("getSavedMessage", event);
     let messages = getMessages();
     let name = getSavedMessageName(event);
-    if (name in messages) {
-        console.log('getSavedMessage', messages, messages[name])
-        return messages[name];
+
+    const m = messages.find((element) => element['name'] === name);
+    if (m) {
+        // console.log('getSavedMessage', messages, messages[name])
+        return m['data'];
     } else {
         return null;
     }
@@ -219,16 +265,27 @@ function displaySavedMessages() {
 
     document.getElementById("saved-messages").innerHTML = "";
 
-
-    for (const [name, data] of Object.entries(messages)) {
-        console.log(name, data);
-        document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
-        `<div>${name}</div>
-                <div class="data">${hs(data)}</div>
+    // for (const [name, data] of Object.entries(messages)) {
+    for (const message of messages) {
+        // console.log(name, data);
+        const name = message['name'];
+        if (message['deletable']) {
+            document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
+                `<div>${name}</div>
+                <div class="data">${hs(message['data'])}</div>
                 <div><button class="saved-msg-send" data-saved-msg="${name}">send</button></div>
                 <div><button class="saved-msg-edit" data-saved-msg="${name}">edit</button></div>
                 <div><button class="saved-msg-delete" data-saved-msg="${name}">delete</button></div>`
-        );
+            );
+        } else {
+            document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
+                `<div>${name}</div>
+                <div class="data">${hs(message['data'])}</div>
+                <div><button class="saved-msg-send" data-saved-msg="${name}">send</button></div>
+                <div><button class="saved-msg-edit" data-saved-msg="${name}">edit</button></div>
+                <div></div>`
+            );
+        }
         // document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
         // `<div><a href="#">${name}</a></div><div class="data">${hs(data)}</div><div><button>send</button></div><div><button>edit</button></div><div><button>delete</button></div>`
         // );
@@ -288,18 +345,22 @@ export function printInputsAndOutputs() {
     clearPorts("outputs");
     clearPorts("inputs");
     const cls = null;
-    MIDI.outputs.forEach(function(port, key) {
-        let label = `${port.manufacturer} ${port.name}`.trim();
-        document.getElementById("outputs").insertAdjacentHTML("beforeend",
-            `<div class=""><input type="checkbox" class="port-enable" data-port-id="${encodeURIComponent(port.id)}" 
-                      ${outputs[port.id]?.enabled ? 'checked' : ''}>${label}</div>`
-        );
-    });
     MIDI.inputs.forEach(function(port, key) {
         let label = `${port.manufacturer} ${port.name}`.trim();
         document.getElementById("inputs").insertAdjacentHTML("beforeend",
             `<div class=""><input type="checkbox" class="port-enable" data-port-id="${encodeURIComponent(port.id)}" 
                       ${inputs[port.id]?.enabled ? 'checked' : ''}>${label}</div>`
+        );
+    });
+
+    // console.log("outputs", outputs);
+
+    MIDI.outputs.forEach(function(port, key) {
+        let label = `${port.manufacturer} ${port.name}`.trim();
+        // console.log("output", port.id, typeof port.id, outputs[port.id].enabled, outputs[port.id]['enabled'], outputs[port.id]);
+        document.getElementById("outputs").insertAdjacentHTML("beforeend",
+            `<div class=""><input type="checkbox" class="port-enable" data-port-id="${encodeURIComponent(port.id)}" 
+                      ${outputs[port.id]?.enabled ? 'checked' : ''}>${label}</div>`
         );
     });
 }

@@ -12,10 +12,15 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
+
+    background-color: #cbcbd7;
+    /*background-color: #d2d5d9;*/
+
 }
 
 header {
-    padding: 5px 20px;
+    margin: 10px 0;
+    padding: 0 10px;
     display: flex;
     justify-content: space-between;
 }
@@ -25,24 +30,37 @@ header {
 }
 
 main {
-    padding: 5px 20px;
+    /*padding: 5px 20px;*/
     /*flex-grow: 2;*/
+    padding: 0 0 0 10px;
+}
+
+.panel {
+    background-color: #ffffff;
+    margin: 0 10px 10px 0;
+    border-radius: 3px;
+    padding: 10px;
 }
 
 .port-name {
+    white-space: normal;
 }
 
 .messages {
-    margin: 0 20px;
+    /*margin: 0 20px;*/
     /*height:50%;*/
     /*min-height:50%;*/
     flex-grow: 2;
     overflow-y: auto;
 }
 
+.message-name {
+    width: 8rem;
+}
+
 #logentries {
     font-family: monospace;
-    font-size: 1rem;
+    font-size: 0.85rem;
 }
 
 .logentry {
@@ -58,7 +76,7 @@ main {
 }
 
 .block-title {
-    padding: 0 20px;
+    /*padding: 0 20px;*/
 }
 
 .ports {
@@ -88,7 +106,7 @@ main {
 
 .sysex-msg-grid {
     display: grid;
-    grid-template-columns: 180px auto auto;
+    grid-template-columns: 140px auto auto;
     grid-column-gap: 0.5rem;
     grid-row-gap: 0.25rem;
     justify-content: start;
@@ -101,7 +119,7 @@ main {
 
 .saved-msgs-grid {
     display: grid;
-    grid-template-columns: 180px auto auto auto auto;
+    grid-template-columns: 140px auto auto auto auto;
     grid-column-gap: 0.5rem;
     grid-row-gap: 0.25rem;
     justify-content: start;
@@ -130,7 +148,7 @@ input.data {
 }
 
 input.sysex {
-    width: 40rem;
+    width: 30rem;
 }
 
 .events {
@@ -151,6 +169,10 @@ h1, h2 {
 
 .flex-grow {
     flex-grow: 1;
+}
+
+.space-between {
+    justify-content: space-between;
 }
 
 .bold {
