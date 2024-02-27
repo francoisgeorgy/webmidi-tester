@@ -1,6 +1,5 @@
 import {hs} from "./utils.js";
 import {printInputsAndOutputs, logError, logEvent, logMessageIn, logMessageOut} from "./main.js";
-// import {loadPreferences, savePreferences} from "./preferences.js";
 
 const ENABLED_BY_DEFAULT = false;
 
@@ -9,9 +8,6 @@ const ENABLED_BY_DEFAULT = false;
  */
 export var MIDI = null;
 
-// var inputInUse;
-// var outputInUse;
-// var inputs = {};
 export var inputs = {};
 export var outputs = {};
 
@@ -31,7 +27,6 @@ function updateInputsOutputs(event) {
         for (const id of Object.keys(inputs)) {  // our array of inputs
             let remove = true;
             for (const input of MIDI.inputs.values()) {    // midi interface list of inputs
-                // console.log("list", id, input.id, input.type, input.name, input.state, input.connection);
                 if (input.id === id) {
                     remove = false;
                     break;
@@ -40,7 +35,6 @@ function updateInputsOutputs(event) {
             if (remove) {
                 logEvent(`remove <b>${inputLabel(id)}</b>`);
                 delete (inputs[id]);
-                // releaseInput();
             }
         }
 
@@ -70,17 +64,14 @@ function updateInputsOutputs(event) {
         for (const id of Object.keys(outputs)) {  // our array of outputs
             let remove = true;
             for (const output of MIDI.outputs.values()) {    // midi interface list of outputs
-                // console.log("check", id, output.id, output.type, output.name, output.state, output.connection);
                 if (output.id === id) {
                     remove = false;
                     break;
                 }
             }
             if (remove) {
-                // console.warn("remove", id);
                 logEvent(`remove <b>${outputLabel(id)}</b>`);
                 delete (outputs[id]);
-                // releaseOutput();
             }
         }
 
@@ -99,52 +90,10 @@ function updateInputsOutputs(event) {
         }
     }
 
-
     autoConnectInput();
     autoConnectOutput();
-
     printInputsAndOutputs();
-
 }
-
-/**
- *
- */
-/*
-function releaseInput() {
-    if (inputInUse) {
-        const input = inputById(inputInUse);
-        if (input) {
-            // console.log("MidiStore.releaseInput: release event handler");
-        }
-    }
-    inputInUse = "";
-}
-*/
-
-/**
- *
- * @param id: string
- */
-/*
-function useOutput(id) {
-    if (outputInUse !== id) {
-        if (outputById(id)) {
-            outputInUse = id;
-            // savePreferences({output_id: id});
-        }
-    }
-}
-*/
-
-/**
- *
- */
-/*
-function releaseOutput() {
-    outputInUse = "";
-}
-*/
 
 /**
  *
@@ -201,7 +150,6 @@ export function outputById(id) {
  */
 function inputLabel(id) {
     return id ? `input <span class="port-name">${inputById(id)?.name}</span>` : 'input unknown';
-    // return id ? `input <span class="port-name">${inputById(id)?.name}</span> (ID ${id})` : 'input unknown';
 }
 
 /**
@@ -210,7 +158,6 @@ function inputLabel(id) {
  */
 function outputLabel(id) {
     return id ? `output <span class="port-name">${outputById(id)?.name}</span>` : 'output unknown';
-    // return id ? `output <span class="port-name">${outputById(id)?.name}</span> (ID ${id})` : 'output unknown';
 }
 
 /**
@@ -239,17 +186,13 @@ function onMidiMessage(message) {
 }
 
 function onStateChange(event) {
-    // logEvent(`state changed to ${event?.port.connection} for ${event?.port.type} <span class="port-name">${event?.port.name}</span> (ID ${event?.port.id})`);
     logEvent(`state changed to ${event?.port.connection} for ${event?.port.type} <span class="port-name">${event?.port.name}</span>`);
     updateInputsOutputs(event);
-    // autoConnectInput();
-    // autoConnectOutput();
 }
 
 export function onMIDISuccess(midiAccess) {
     logEvent("Your browser supports WebMIDI.");
     logEvent("MIDI backend enabled");
-    // document.getElementById("details").classList.remove('hide');
     MIDI = midiAccess;
     MIDI.onstatechange = onStateChange;
     updateInputsOutputs(null);
@@ -259,7 +202,6 @@ export function onMIDIFailure(msg) {
     logEvent("Your browser supports WebMIDI.");
     logError("Access to WebMIDI is denied. Check your browser settings.");
 }
-
 
 //=============================================================================
 // Prefs
