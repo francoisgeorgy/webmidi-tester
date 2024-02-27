@@ -15,22 +15,31 @@ export function padZero(str, len, char = '0') {
 export function b(v) {
     // noinspection JSCheckFunctionSignatures
     return (v === null || v === undefined) ? "" : padZero(v.toString(2).toUpperCase(), 8);
-};
+}
 
 export function h(v) {
     // noinspection JSCheckFunctionSignatures
     return (v === null || v === undefined) ? "" : padZero(v.toString(16).toUpperCase(), 2);
-};
+}
+
+export function h0x(v) {
+    // noinspection JSCheckFunctionSignatures
+    return (v === null || v === undefined) ? "" : `0x${padZero(v.toString(16).toUpperCase(), 2)}`;
+}
 
 export function d(v) {
     // noinspection JSCheckFunctionSignatures
     return (v === null || v === undefined) ? "" : padZero(v.toString(10).toUpperCase(), 3);
-};
+}
 
 // hex string
 // @ts-ignore
 export function hs(data) {
     return (data === null || data === undefined) ? "" : (Array.from(data).map(n => h(n))).join(" ");
+}    // Array.from() is necessary to get a non-typed array
+
+export function hs0x(data) {
+    return (data === null || data === undefined) ? "" : (Array.from(data).map(n => h0x(n))).join(" ");
 }    // Array.from() is necessary to get a non-typed array
 
 export function hsbr(data, cols= 8, sepcol = '<br>', sep = '&nbsp;') {
@@ -68,9 +77,9 @@ export function fromHexString(str, sep) {
     return a;
 }
 
-export function parseNumbersString(str) {
+export function parseNumbersString(str, defaultHex = false) {
     let data = str.trim().split(" ").map(s => {
-        let n = parseInt(s);
+        let n = defaultHex ? parseInt(s, 16) : parseInt(s);
         return isNaN(n) ? null : n;
     }).filter(n => n !== null);
     return data;

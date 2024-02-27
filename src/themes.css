@@ -36,9 +36,11 @@ body {
     color: var(--text-primary);
 }
 
+/*
 html {
-    background-color: var(--main-bg-color); /* because #root element may become larger than body element */
+    background-color: var(--main-bg-color); !* because #root element may become larger than body element *!
 }
+*/
 
 .text-secondary {
     color: var(--text-secondary);
@@ -66,17 +68,21 @@ a.active {
 }
 
 header {
-    background-color: var(--header-bg);
-    border-bottom: 1px solid var(--border-colored);
+    /*background-color: var(--header-bg);*/
+    /*border-bottom: 1px solid var(--border-colored);*/
 }
 
+/*
 main {
     background-color: var(--main-bg-color);
 }
+*/
 
+/*
 .messages {
     background-color: var(--messages-bg-color);
 }
+*/
 
 .entry-msg-out {
     background-color: #eaebf3;

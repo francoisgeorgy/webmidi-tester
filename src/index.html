@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>WebMIDI Tester - by studiocode.dev</title>
+    <title>WebMIDI Tester - Inputs and Outputs - by StudioCode.dev</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="https://studiocode.dev/">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
@@ -25,20 +25,49 @@
         <div class="title">
             WebMIDI Tester
         </div>
-        <div class="grow align-end mr-10">
-            v0.1 by <a href="https://studiocode.dev/" target="_blank" rel="noopener noreferrer">StudioCode.dev</a>
+        <div class="grow align-end">
+            v0.2 by <a href="https://studiocode.dev/" target="_blank" rel="noopener noreferrer">StudioCode.dev</a>
         </div>
     </header>
     <main>
-        <div class="tools mt-10">
-            <div class="flex-row">
-                <div>
-                    <div class="voice-msg-grid">
+        <div class="flex-row">
+
+            <div>
+                <div class="Xpanel">
+                    <div class="flex-row ports">
+                        <div class="panel">
+                            <div class="flex-row space-between item-center">
+                                <div>
+                                    <span class="bold">Inputs :</span>
+                                    select <a href="#" id="select-inputs-none" title="Unselect all inputs.">none</a> <a href="#" id="select-inputs-all" title="Select all inputs.">all</a>
+                                </div>
+                                <div class="text-small ml-10">
+                                    (<a href="details.html" target="_blank">details</a>)
+                                </div>
+                            </div>
+                            <div id="inputs" class="infos mt-5"></div>
+                        </div>
+                        <div class="panel">
+                            <div class="flex-row space-between item-center">
+                                <div>
+                                    <span class="bold">Outputs :</span>
+                                    select <a href="#" id="select-outputs-none" title="Unselect all outputs.">none</a> <a href="#" id="select-outputs-all" title="Select all outputs.">all</a>
+                                </div>
+                                <div class="text-small ml-10">
+                                    (<a href="details.html" target="_blank">details</a>)
+                                </div>
+                            </div>
+                            <div id="outputs" class="infos mt-5"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="Xmt-20 voice-msg-grid">
 
                         <div class="grid-col-span-2">channel</div>
                         <div>data 1</div>
                         <div>data 2</div>
-                        <div></div>
+                        <div class="grid-col-span-2"></div>
 
                         <div class="msg-name">
                             Note Off
@@ -70,9 +99,10 @@
                             velocity <input type="text" class="data data2" id="NOTE_OFF-data2" value="0" />
                         </div>
                         <div>
-                            <button title="send a Note OFF message" class="btSend"
+                            <button title="Send a Note OFF message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NOTE_OFF">Send</button>
                         </div>
+                        <div></div>
 
                         <div class="msg-name">
                             Note On
@@ -104,9 +134,10 @@
                             velocity <input type="text" class="data data2" id="NOTE_ON-data2" value="127" />
                         </div>
                         <div>
-                            <button title="send a Note ON message" class="btSend"
+                            <button title="Send a Note ON message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NOTE_ON">Send</button>
                         </div>
+                        <div></div>
 
                         <div class="msg-name">Poly. Key Pres.</div>
                         <div>
@@ -136,9 +167,10 @@
                             pressure <input type="text" class="data data2" id="POLY_PRESSURE-data2" value="0" />
                         </div>
                         <div>
-                            <button title="send a Polyphonic Key Pressure (Aftertouch) message" class="btSend"
+                            <button title="Send a Polyphonic Key Pressure (Aftertouch) message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="POLY_PRESSURE">Send</button>
                         </div>
+                        <div></div>
 
                         <div class="msg-name">Controller (CC)</div>
                         <div>
@@ -168,8 +200,11 @@
                             value <input type="text" class="data data2" id="CC-data2" value="0" />
                         </div>
                         <div>
-                            <button title="send a Continuous Controller message" class="btSend"
+                            <button title="Send a Continuous Controller message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CC">Send</button>
+                        </div>
+                        <div>
+                            <input type="range" min="0" max="127" step="1" class="slider" />
                         </div>
 
                         <div class="msg-name">Prog. Change (PC)</div>
@@ -198,9 +233,10 @@
                         </div>
                         <div></div>
                         <div>
-                            <button title="send a Program Change message" class="btSend"
+                            <button title="Send a Program Change message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PC">Send</button>
                         </div>
+                        <div></div>
 
                         <div class="msg-name">Channel Pres.</div>
                         <div>
@@ -227,11 +263,13 @@
                             pressure <input type="text" class="data data1" id="CHANNEL_PRESSURE-data1" value="0" />
                         </div>
                         <div>
-
                         </div>
                         <div>
-                            <button title="send a Channel Pressure (Aftertouch) message" class="btSend"
+                            <button title="Send a Channel Pressure (Aftertouch) message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CHANNEL_PRESSURE">Send</button>
+                        </div>
+                        <div>
+                            <input type="range" min="0" max="127" step="1" class="slider" />
                         </div>
 
                         <div class="msg-name">Pitch Bend</div>
@@ -262,90 +300,112 @@
                             MSB <input type="text" class="data data2" id="PITCH_BEND-data2" value="64" />
                         </div>
                         <div>
-                            <button title="send a Pitch Bend message" class="btSend"
+                            <button title="Send a Pitch Bend message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PITCH_BEND">Send</button>
                         </div>
-<!--
-                        <div class="msg-name">NRPN</div>
                         <div>
-                            <select class="data data-ch" id="NRPN-ch">
-                                <option value="0">1</option>
-                                <option value="1">2</option>
-                                <option value="2">3</option>
-                                <option value="3">4</option>
-                                <option value="4">5</option>
-                                <option value="5">6</option>
-                                <option value="6">7</option>
-                                <option value="7">8</option>
-                                <option value="8">9</option>
-                                <option value="9">10</option>
-                                <option value="10">11</option>
-                                <option value="11">12</option>
-                                <option value="12">13</option>
-                                <option value="13">14</option>
-                                <option value="14">15</option>
-                                <option value="15">16</option>
-                            </select>
+                            <input type="range" min="0" max="16383" step="1" class="slider" />
                         </div>
-                        <div>
-                            LSB <input type="text" class="data data1" id="NRPN-data1" value="0" />
-                        </div>
-                        <div>
-                            MSB <input type="text" class="data data2" id="NRPN-data2" value="0" />
-                        </div>
-                        <div>
-                            <button title="send a NRPN message" class="btSend"
-                                    data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NRPN">Send</button>
-                        </div>
--->
                     </div>
                 </div>
-                <div class="ports ml-20">
-                    <div>
-                        <span class="bold">Inputs :</span> (<a href="details.html" target="_blank">details</a>)
-                        <div id="inputs" class="infos mt-5"></div>
+                <div class="panel">
+                    <div class="flex-row space-between">
+                        <div class="bold mb-10">Any messages :</div>
+                        <div class="text-small light">Use <code>0x</code> prefix for hex or check "default hex".</div>
                     </div>
-                    <div class="mt-10">
-                        <span class="bold">Outputs :</span>
-                        select <a href="#" id="select-none">none</a> <a href="#" id="select-all">all</a>
-                        (<a href="details.html" target="_blank">details</a>)
-                        <div id="outputs" class="infos mt-5"></div>
-                    </div>
+
+<!--                    <div class="Xmt-10">-->
+                        <div class="sysex-msg-grid">
+<!--
+                            <div class="msg-name">
+                                Device Identity Request
+                            </div>
+                            <div class="justify-start">
+                                <button title="Send a SysEx message"  id="btSendIDRequest">Send</button>
+                            </div>
+                            <div>
+                            </div>
+-->
+<!--
+                            <div class="msg-name">
+                                SysEx
+                            </div>
+                            <div>
+                                0xF0 <input type="text" class="sysex" id="sysex-data" /> 0xF7
+                            </div>
+                            <div>
+                                <button title="Send a SysEx message" id="btSendSysex">Send</button>
+                                <span class="ml-10">save as <input type="text" class="message-name" id="message-sysex-name" /></span>
+                            </div>
+-->
+<!--
+                            <div class="msg-name">
+                                Arbitrary bytes
+                            </div>
+-->
+                            <div>
+                                <input type="text" class="sysex" id="any-data" />
+                            </div>
+                            <div>
+                                <button id="btSendBytes" title="Send the message to all selected outputs">Send</button>
+                                <!--                        <button title="Send an arbitrary message" id="btSendBytesAndSave">Send and save</button>-->
+<!--                                <span class="ml-10">save as <input type="text" class="message-name" id="message-any-name" /></span>-->
+                            </div>
+
+<!--                            <div></div>-->
+                            <div class="flex-row space-between">
+                                <div>
+<!--                                    <input type="checkbox" id="check-sysex">sysex-->
+                                    <button type="button" id="make-sysex" title="Add start-of-sysex byte (0xF0) and end-of-sysex byte (0xF7).">sysex</button>
+                                    <button type="button" id="apply-mask" title="Mask each value with 0x7F (limit each value to 7 bits).">mask 0x7F</button>
+<!--                                    <input type="checkbox" id="check-mask">apply mask 0x7F-->
+                                    <input type="checkbox" id="check-hex"><label for="check-hex">default hex</label>
+                                </div>
+                                <div>
+                                    save as <input type="text" class="message-name" id="message-any-name" title="Save the message with this name." />
+                                </div>
+                            </div>
+                            <div></div>
+
+                        </div>
+
+                        <div class="mt-10">
+                            <div class="light text-small">Saved messages :</div>
+                            <div id="saved-messages" class="saved-msgs-grid mt-5"></div>
+                            <!--                    <button id="clear-saved-messages" type="button">clear</button>-->
+                        </div>
+
+                        <div id="import-export" class="mt-10">
+                            <button id="import-messages" title="Import messages from a file.">import</button>
+                            <button id="export-messages" title="Export all saved messages to a file.">export</button>
+                        </div>
+                        <div id="file-chooser" class="mt-10" style="display:none">
+                            <input type="file" id="input-file" />
+                        </div>
+
+<!--                    </div>-->
                 </div>
             </div>
 
-            <div class="mt-10">
-                <div class="sysex-msg-grid">
-                    <div class="msg-name">
-                        Device Identity Request
-                    </div>
-                    <div class="justify-start">
-                        <button title="send a SysEx message"  id="btSendIDRequest">Send</button>
-                    </div>
+            <div class="panel flex-grow">
+
+                <div class="block-title Xborder-bottom Xmt-20 Xmb-5 flex-row space-between">
                     <div>
+                    <span class="bold">Events and Messages</span> <button id="btClearMessages" class="ml-10">clear</button>
                     </div>
-                    <div class="msg-name">
-                        SysEx
-                    </div>
-                    <div>
-                        <input type="text" class="sysex" id="sysex-data" />
-                    </div>
-                    <div>
-                        <button title="send a SysEx message"  id="btSendSysex">Send</button>
-                    </div>
-                    <div class="msg-name">
-                        Arbitrary bytes
-                    </div>
-                    <div>
-                        <input type="text" class="sysex" id="any-data" value="0xFF" />
-                    </div>
-                    <div>
-                        <button title="send an arbitrary message"  id="btSendBytes">Send</button>
-                    </div>
+                    <span>View in StudioCode.dev <a href="https://studiocode.dev/midi-monitor/" target="_blank">MIDI Monitor</a></span>
                 </div>
+                <div class="messages mt-10">
+                    <div id="logentries">
+                    </div>
+                    <div id="end-of-list"></div>
+                </div>
+
             </div>
 
         </div>
+
+
 <!--
         <div class="mt-20">
             Messages are sent to the checked outputs.<br />
@@ -353,14 +413,5 @@
         </div>
 -->
     </main>
-    <div class="block-title border-bottom mt-20 mb-5">
-        <span class="bold">Events and Messages</span> <button id="btClearMessages">clear</button>
-        <span class="ml-20"><a href="https://studiocode.dev/midi-monitor/" target="_blank">MIDI Monitor</a></span>
-    </div>
-    <div class="messages">
-        <div id="logentries">
-        </div>
-        <div id="end-of-list"></div>
-    </div>
 </body>
 </html>

@@ -2,14 +2,17 @@ import {hs} from "./utils.js";
 import {printInputsAndOutputs, logError, logEvent, logMessageIn, logMessageOut} from "./main.js";
 // import {loadPreferences, savePreferences} from "./preferences.js";
 
+const ENABLED_BY_DEFAULT = false;
+
 /**
  *  @typedef WebMidi.MIDIAccess
  */
 export var MIDI = null;
 
-var inputInUse;
-var outputInUse;
-var inputs = {};
+// var inputInUse;
+// var outputInUse;
+// var inputs = {};
+export var inputs = {};
 export var outputs = {};
 
 /**
@@ -35,9 +38,9 @@ function updateInputsOutputs(event) {
                 }
             }
             if (remove) {
-                logEvent(`remove ${inputLabel(id)}`);
+                logEvent(`remove <b>${inputLabel(id)}</b>`);
                 delete (inputs[id]);
-                releaseInput();
+                // releaseInput();
             }
         }
 
@@ -48,12 +51,12 @@ function updateInputsOutputs(event) {
                 continue;
             }
             // New input to add:
-            logEvent(`add ${inputLabel(input.id)}`);
+            logEvent(`add <b>${inputLabel(input.id)}</b>`);
             inputs[input.id] = {
                 id: input.id,
                 name: input.name ?? '',
                 connection: input.connection,
-                enabled: false
+                enabled: ENABLED_BY_DEFAULT
             };
             input.onmidimessage = onMidiMessage;
         }
@@ -75,9 +78,9 @@ function updateInputsOutputs(event) {
             }
             if (remove) {
                 // console.warn("remove", id);
-                logEvent(`remove ${outputLabel(id)}`);
+                logEvent(`remove <b>${outputLabel(id)}</b>`);
                 delete (outputs[id]);
-                releaseOutput();
+                // releaseOutput();
             }
         }
 
@@ -86,15 +89,19 @@ function updateInputsOutputs(event) {
             if (output.id in outputs) {
                 continue;
             }
-            logEvent(`add ${outputLabel(output.id)}`);
+            logEvent(`add <b>${outputLabel(output.id)}</b>`);
             outputs[output.id] = {
                 id: output.id,
                 name: output.name ?? '',
                 connection: output.connection,
-                enabled: true
+                enabled: ENABLED_BY_DEFAULT
             };
         }
     }
+
+
+    autoConnectInput();
+    autoConnectOutput();
 
     printInputsAndOutputs();
 
@@ -103,6 +110,7 @@ function updateInputsOutputs(event) {
 /**
  *
  */
+/*
 function releaseInput() {
     if (inputInUse) {
         const input = inputById(inputInUse);
@@ -112,11 +120,13 @@ function releaseInput() {
     }
     inputInUse = "";
 }
+*/
 
 /**
  *
  * @param id: string
  */
+/*
 function useOutput(id) {
     if (outputInUse !== id) {
         if (outputById(id)) {
@@ -125,32 +135,33 @@ function useOutput(id) {
         }
     }
 }
+*/
 
 /**
  *
  */
+/*
 function releaseOutput() {
     outputInUse = "";
 }
+*/
 
 /**
  *
  */
 function autoConnectInput() {
-    if (inputInUse) return;
-    // const s = loadPreferences();
-    // if (s.input_id) {
-    // }
+    for (const id of getInputsSelection()) {
+        inputs[id].enabled = true;
+    }
 }
 
 /**
  *
  */
 function autoConnectOutput() {
-    if (outputInUse) return;
-    // const s = loadPreferences();
-    // if (s.output_id) {
-    // }
+    for (const id of getOutputsSelection()) {
+        outputs[id].enabled = true;
+    }
 }
 
 /**
@@ -185,7 +196,8 @@ export function outputById(id) {
  * @returns {string|string}
  */
 function inputLabel(id) {
-    return id ? `input <span class="port-name">${inputById(id)?.name}</span> (ID ${id})` : 'input unknown';
+    return id ? `input <span class="port-name">${inputById(id)?.name}</span>` : 'input unknown';
+    // return id ? `input <span class="port-name">${inputById(id)?.name}</span> (ID ${id})` : 'input unknown';
 }
 
 /**
@@ -193,7 +205,8 @@ function inputLabel(id) {
  * @returns {string|string}
  */
 function outputLabel(id) {
-    return id ? `output <span class="port-name">${outputById(id)?.name}</span> (ID ${id})` : 'output unknown';
+    return id ? `output <span class="port-name">${outputById(id)?.name}</span>` : 'output unknown';
+    // return id ? `output <span class="port-name">${outputById(id)?.name}</span> (ID ${id})` : 'output unknown';
 }
 
 /**
@@ -222,10 +235,11 @@ function onMidiMessage(message) {
 }
 
 function onStateChange(event) {
-    logEvent(`state changed to ${event?.port.connection} for ${event?.port.type} <span class="port-name">${event?.port.name}</span> (ID ${event?.port.id})`);
+    // logEvent(`state changed to ${event?.port.connection} for ${event?.port.type} <span class="port-name">${event?.port.name}</span> (ID ${event?.port.id})`);
+    logEvent(`state changed to ${event?.port.connection} for ${event?.port.type} <span class="port-name">${event?.port.name}</span>`);
     updateInputsOutputs(event);
-    autoConnectInput();
-    autoConnectOutput();
+    // autoConnectInput();
+    // autoConnectOutput();
 }
 
 export function onMIDISuccess(midiAccess) {
@@ -241,3 +255,37 @@ export function onMIDIFailure(msg) {
     logEvent("Your browser supports WebMIDI.");
     logError("Access to WebMIDI is denied. Check your browser settings.");
 }
+
+
+//=============================================================================
+// Prefs
+//-----------------------------------------------------------------------------
+
+export function saveInputsSelection() {
+    let a = [];
+    for (const id in inputs) {
+        if (inputs[id].enabled) {
+            a.push(id);
+        }
+    }
+    localStorage.setItem('studiocode.dev.webmidi.tester.inputs', JSON.stringify(a));
+}
+
+function getInputsSelection() {
+    return JSON.parse(localStorage.getItem('studiocode.dev.webmidi.tester.inputs') || "[]");
+}
+
+export function saveOutputsSelection() {
+    let a = [];
+    for (const id in outputs) {
+        if (outputs[id].enabled) {
+            a.push(id);
+        }
+    }
+    localStorage.setItem('studiocode.dev.webmidi.tester.outputs', JSON.stringify(a));
+}
+
+function getOutputsSelection() {
+    return JSON.parse(localStorage.getItem('studiocode.dev.webmidi.tester.outputs') || "[]");
+}
+
