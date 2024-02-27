@@ -63,6 +63,11 @@ main {
     font-size: 0.85rem;
 }
 
+#logentries-wrapper {
+    overflow-y: scroll;
+    max-height: calc(100vh - 100px);
+}
+
 .logentry {
     white-space: pre;
 }
