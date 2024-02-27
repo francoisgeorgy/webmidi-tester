@@ -282,7 +282,7 @@ function getSavedMessageName(event) {
 function getSavedMessage(event) {
     console.log("getSavedMessage", event);
     let messages = getMessages();
-    let name = getSavedMessageName(event);
+    let name = decodeURI(getSavedMessageName(event));
 
     const m = messages.find((element) => element['name'] === name);
     if (m) {
@@ -353,9 +353,9 @@ function displaySavedMessages() {
             document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
                 `<div class="saved-message-name">${name}</div>
                 <div class="data">${hs(message['data'])}</div>
-                <div><button class="saved-msg-edit" data-saved-msg="${name}" title="Copy the message in the input field for editing.">edit</button></div>
-                <div><button class="saved-msg-delete" data-saved-msg="${name}" title="Remove this message for the saved messages.">delete</button></div>
-                <div><button class="saved-msg-send" data-saved-msg="${name}"title="Send the message to all selected outputs.">send</button></div>`
+                <div><button class="saved-msg-edit" data-saved-msg="${encodeURI(name)}" title="Copy the message in the input field for editing.">edit</button></div>
+                <div><button class="saved-msg-delete" data-saved-msg="${encodeURI(name)}" title="Remove this message for the saved messages.">delete</button></div>
+                <div><button class="saved-msg-send" data-saved-msg="${encodeURI(name)}"title="Send the message to all selected outputs.">send</button></div>`
             );
         // } else {
         //     document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
@@ -374,9 +374,9 @@ function displaySavedMessages() {
     // data-msg-mode="CHANNEL_MESSAGE" data-msg-type="NOTE_OFF"
     //         const messageMode = $(this).data('msgMode').toUpperCase();
 
-    $('.saved-msg-send').on('click', sendSavedMessage);
     $('.saved-msg-edit').on('click', editSavedMessage);
     $('.saved-msg-delete').on('click', deleteSavedMessage);
+    $('.saved-msg-send').on('click', sendSavedMessage);
 
 }
 

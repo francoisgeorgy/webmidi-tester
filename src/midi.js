@@ -151,7 +151,9 @@ function releaseOutput() {
  */
 function autoConnectInput() {
     for (const id of getInputsSelection()) {
-        inputs[id].enabled = true;
+        if (id in inputs) {
+            inputs[id].enabled = true;
+        }
     }
 }
 
@@ -160,7 +162,9 @@ function autoConnectInput() {
  */
 function autoConnectOutput() {
     for (const id of getOutputsSelection()) {
-        outputs[id].enabled = true;
+        if (id in outputs) {
+            outputs[id].enabled = true;
+        }
     }
 }
 
