@@ -94,6 +94,11 @@ function onClickBtSendBytes() {
 
     const data = parseNumbersString($("#any-data").val(), isDefaultHex());
 
+    if (data === null || data.length <= 0) {
+        console.log("empty data; ignore command");
+        return;
+    }
+
     sendAny(data);
 
     let n = $('#message-any-name').val() || '';
@@ -205,6 +210,12 @@ function setupUIHandler() {
 
     $('#clear-saved-messages').on('click', clearSavedMessages);
 
+    $('#import-messages').on('click', upload);
+    $('#export-messages').on('click', download);
+
+    $('#input-file').on('change', loadfile);
+
+
     // $('#check-sysex').on('click', toggleSysex);
     $('#make-sysex').on('click', makeSysex);
     $('#apply-mask').on('click', applyMask);
@@ -220,22 +231,27 @@ function setupUIHandler() {
 // Save
 //-----------------------------------------------------------------------------
 
+function storeMessages(messages) {
+    console.log("storeMessages", messages);
+    localStorage.setItem('studiocode.dev.webmidi.tester.messages', JSON.stringify(messages));
+}
+
 function saveMessage(name, data){
-    console.log("saveMessage", name);
+    // console.log("saveMessage", name);
     let messages = getMessages();
     const i = messages.findIndex((element) => element['name'] === name);
-    console.log('i', i, messages);
+    // console.log('i', i, messages);
     if (data == null) {
         if (i >= 0) messages.splice(i, 1);
     } else {
         if (i >= 0) {
-            messages[i] = {name, data, deletable: true};
+            messages[i] = {name, data};
         } else {
-            messages.push({name, data, deletable: true});
+            messages.push({name, data});
         }
     }
-    console.log(messages);
-    localStorage.setItem('studiocode.dev.webmidi.tester.messages', JSON.stringify(messages));
+    // console.log(messages);
+    storeMessages(messages);
 }
 
 function getMessages() {
@@ -249,8 +265,8 @@ function getMessages() {
                     SYSEX_START,
                     ...SYSEX_ID_REQUEST,
                     SYSEX_END
-                ],
-                deletable: false
+                ] //,
+                // deletable: false
             }
         ];
     } else {
@@ -333,23 +349,23 @@ function displaySavedMessages() {
         // console.log(name, data);
         if (message === null) continue;
         const name = message['name'];
-        if (message['deletable']) {
+        // if (message['deletable']) {
             document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
-                `<div>${name}</div>
+                `<div class="saved-message-name">${name}</div>
                 <div class="data">${hs(message['data'])}</div>
-                <div><button class="saved-msg-edit" data-saved-msg="${name}">edit</button></div>
-                <div><button class="saved-msg-delete" data-saved-msg="${name}">delete</button></div>
-                <div><button class="saved-msg-send" data-saved-msg="${name}">send</button></div>`
+                <div><button class="saved-msg-edit" data-saved-msg="${name}" title="Copy the message in the input field for editing.">edit</button></div>
+                <div><button class="saved-msg-delete" data-saved-msg="${name}" title="Remove this message for the saved messages.">delete</button></div>
+                <div><button class="saved-msg-send" data-saved-msg="${name}"title="Send the message to all selected outputs.">send</button></div>`
             );
-        } else {
-            document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
-                `<div>${name}</div>
-                <div class="data">${hs(message['data'])}</div>
-                <div><button class="saved-msg-edit" data-saved-msg="${name}">edit</button></div>
-                <div></div>
-                <div><button class="saved-msg-send" data-saved-msg="${name}">send</button></div>`
-            );
-        }
+        // } else {
+        //     document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
+        //         `<div class="saved-message-name">${name}</div>
+        //         <div class="data">${hs(message['data'])}</div>
+        //         <div><button class="saved-msg-edit" data-saved-msg="${name}" title="Copy the message in the input field for editing.">edit</button></div>
+        //         <div></div>
+        //         <div><button class="saved-msg-send" data-saved-msg="${name}" title="Send the message to all selected outputs.">send</button></div>`
+        //     );
+        // }
         // document.getElementById("saved-messages").insertAdjacentHTML("beforeend",
         // `<div><a href="#">${name}</a></div><div class="data">${hs(data)}</div><div><button>send</button></div><div><button>edit</button></div><div><button>delete</button></div>`
         // );
@@ -365,8 +381,70 @@ function displaySavedMessages() {
 }
 
 function clearSavedMessages() {
-    localStorage.setItem('studiocode.dev.webmidi.tester.messages', JSON.stringify({}));
+    // localStorage.setItem('studiocode.dev.webmidi.tester.messages', JSON.stringify({}));
+    storeMessages([]);
     displaySavedMessages();
+}
+
+/**
+ * Format : "<name>" "hex" data...
+ */
+function download() {
+    let data = '';
+    for (const message of getMessages()) {
+        if (message === null) continue;
+        data = data + `"${message['name'].replace(/"/g, '\\"')}" hex ${hs(message['data'])}\n`;
+    }
+    let downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(new Blob([data]));
+    downloadLink.download = "midi-messages.txt";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+
+function upload() {
+    console.log("upload");
+    $('#import-export').hide();
+    $('#file-chooser').show();
+}
+
+function loadfile() {
+    // console.log('loadfile', this.files);
+    let reader = new FileReader();
+    reader.onload = (e) => {
+        const file = e.target.result;
+        const lines = file.split(/\r\n|\n/);
+        console.log("lines", lines);
+        loadMessagesFromStrings(lines);
+    };
+    reader.onerror = (e) => alert(e.target.error.name);
+    reader.readAsText(this.files[0]);
+}
+
+function loadMessagesFromStrings(strings) {
+    // console.log("loadMessagesFromStrings");
+    const messages = [];
+    const regex = /"(.*?)" hex (.*)/
+    let matches;
+    for (const s of strings) {
+        console.log("loadMessagesFromStrings ", s);
+        const found = s.trim().match(regex);
+        if (found) {
+            // let name = found[1].replace(/\\"/g, '"');
+            // let data = found[2];
+            messages.push({
+                name: found[1].replace(/\\"/g, '"'),
+                data: parseNumbersString(found[2], true)
+            })
+        }
+    }
+    if (messages.length > 0) {
+        storeMessages(messages);
+        displaySavedMessages();
+    }
+    $('#file-chooser').hide();
+    $('#import-export').show();
 }
 
 //=============================================================================
