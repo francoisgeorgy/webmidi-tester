@@ -208,8 +208,10 @@
                             <button title="Send a Continuous Controller message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CC">Send</button>
                         </div>
-                        <div>
-                            <input type="range" min="0" max="127" step="1" class="slider" />
+                        <div class="justify-start">
+                            <input type="range" min="0" max="127" step="1" class="slider"
+                                   data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CC"
+                                   data-msg-update="data2" />
                         </div>
 
                         <div class="msg-name">Prog. Change (PC)</div>
@@ -273,8 +275,10 @@
                             <button title="Send a Channel Pressure (Aftertouch) message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CHANNEL_PRESSURE">Send</button>
                         </div>
-                        <div>
-                            <input type="range" min="0" max="127" step="1" class="slider" />
+                        <div class="justify-start">
+                            <input type="range" min="0" max="127" step="1" class="slider"
+                                   data-msg-mode="CHANNEL_MESSAGE" data-msg-type="CHANNEL_PRESSURE"
+                                   data-msg-update="data1" />
                         </div>
 
                         <div class="msg-name">Pitch Bend</div>
@@ -308,8 +312,11 @@
                             <button title="Send a Pitch Bend message" class="btSend"
                                     data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PITCH_BEND">Send</button>
                         </div>
-                        <div>
-                            <input type="range" min="0" max="16383" step="1" class="slider" />
+                        <div class="justify-start flex-row item-center">
+                            <input type="range" min="0" max="16383" step="1" class="slider"
+                                   data-msg-mode="CHANNEL_MESSAGE" data-msg-type="PITCH_BEND"
+                                   data-msg-update="data1,data2" />
+                            <span class="text-small ml-5" id="pitch-bend-value"></span>
                         </div>
                     </div>
                 </div>

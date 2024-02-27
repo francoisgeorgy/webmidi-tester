@@ -46,21 +46,40 @@ function onClickOutputEnable(event) {
 }
 
 function onClickBtSend(event) {
-
     const messageMode = $(this).data('msgMode').toUpperCase();
     const messageType = $(this).data('msgType').toUpperCase();
     const channel = parseInt($(`#${messageType}-ch`).val(), 10);
     const data1 = parseInt($(`#${messageType}-data1`).val());
-    const data2 = parseInt($(`#${messageType}-data2`).val());
-
+    const data2 = $(`#${messageType}-data2`).length ? parseInt($(`#${messageType}-data2`).val()) : null;
     send(messageMode, messageType, channel, data1, data2);
 }
 
-function onSliderChange(event) {
-    console.log('slider change', event.target.value);
-}
 function onSliderInput(event) {
-    console.log('slider input', event.target.value);
+    // console.log('slider input', event.target.value);
+    const messageMode = $(this).data('msgMode').toUpperCase();
+    const messageType = $(this).data('msgType').toUpperCase();
+    const messageUpdate = $(this).data('msgUpdate');
+    const channel = parseInt($(`#${messageType}-ch`).val(), 10);
+    let data1 = parseInt($(`#${messageType}-data1`).val());
+    let data2 = $(`#${messageType}-data2`).length ? parseInt($(`#${messageType}-data2`)) : null;
+    const v = parseInt(event.target.value);
+    $(`#${messageType}-${messageUpdate}`).val(v);
+    if (messageUpdate === 'data1') {
+        data1 = v;
+    } else if (messageUpdate === 'data2') {
+        data2 = v;
+    } else if (messageUpdate === 'data1,data2') {
+        // pitch bend = 128*MSB + LSB
+        // data1 is LSB, data2 is MSB
+        data1 = v & 0x007f;
+        data2 = (v >> 7) & 0x007f;
+        $(`#${messageType}-data1`).val(data1);
+        $(`#${messageType}-data2`).val(data2);
+
+        $('#pitch-bend-value').text(v);
+
+    }
+    send(messageMode, messageType, channel, data1, data2);
 }
 
 function onClickBtSendIDRequest() {
@@ -162,7 +181,7 @@ function setupUIHandler() {
     $('#inputs').on('click', 'input.port-enable', onClickInputEnable);
     $('#outputs').on('click', 'input.port-enable', onClickOutputEnable);
     $('.btSend').on('click', onClickBtSend);
-    $('input.slider').on('change', onSliderChange);
+    // $('input.slider').on('change', onSliderChange);
     $('input.slider').on('input', onSliderInput);
     $('#btSendIDRequest').on('click', onClickBtSendIDRequest);
     $('#btSendBytes').on('click', onClickBtSendBytes);

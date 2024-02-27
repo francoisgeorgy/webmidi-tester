@@ -26,6 +26,7 @@ export const SYSEX_END = 0xF7;
 export const SYSEX_ID_REQUEST = [0x7E, 0x00, 0x06, 0x01];
 
 export function send(messageMode, messageType, channel, data1, data2) {
+    // console.log("send", messageMode, messageType, channel, data1, data2)
     if (!(messageMode in MIDI_MESSAGE)) {
         console.warn('invalid message mode', messageMode);
         return;
