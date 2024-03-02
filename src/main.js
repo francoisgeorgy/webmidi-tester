@@ -423,7 +423,6 @@ function main() {
     } else {
         logError("Your browser does not support WebMIDI.");
         document.getElementById("unsupported").classList.add('show');
-
     }
     setupUIHandler();
 }
