@@ -85,7 +85,8 @@ main {
 */
 
 .entry-msg-out {
-    background-color: #eaebf3;
+    /*background-color: #eaebf3;*/
+    color: blue;
 }
 
 .entry-error {
