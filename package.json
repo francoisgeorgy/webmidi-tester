@@ -3,6 +3,7 @@
     "version": "0.2.0",
     "license": "MIT",
     "author": "François Georgy <francois.georgy@gmail.com> (https://studiocode.dev/)",
-    "dependencies" : {
+    "devDependencies": {
+        "@types/jquery": "^3.5.29"
     }
 }
