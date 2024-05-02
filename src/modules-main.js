@@ -6,19 +6,19 @@ function autoConnect() {
     setAutoConnect(/.*midi.*/i);
 }
 
-function setupMIDI() {
-    console.group("setupMIDI");
+function askForMIDIAccess() {
+    console.group("main :: askForMIDIAccess");
     let m = requestMIDIAccess();
-    console.log("setupMIDI ::", m);
+    console.log("main :: askForMIDIAccess ::", m);
     m.then((r) => {
-        console.log("setupMIDI :: then", r);
+        console.log("main :: askForMIDIAccess :: then", r);
         autoConnect();
     });
     console.groupEnd();
 }
 
 function clickAutoConnect() {
-    console.log("clickAutoConnect");
+    console.log("main :: clickAutoConnect");
     autoConnect();
 }
 
@@ -27,7 +27,7 @@ function clickAutoConnect() {
 //-----------------------------------------------------------------------------
 
 function main() {
-    setupMIDI();
+    askForMIDIAccess();
     document.getElementById("btAutoConnect").addEventListener("click", function() {
         // console.log("#btAutoConnect click");
         clickAutoConnect();
