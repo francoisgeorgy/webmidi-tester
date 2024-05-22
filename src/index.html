@@ -30,7 +30,7 @@
             WebMIDI Tester
         </div>
         <div class="grow align-end">
-            v0.2 by <a
+            v0.3 by <a
                 href="https://francoisgeorgy.ch/" target="_blank" rel="noopener noreferrer">francoisgeorgy.ch</a> / <a
                 href="https://studiocode.dev/" target="_blank" rel="noopener noreferrer">StudioCode.dev</a>
         </div>
@@ -44,7 +44,10 @@
                             <div class="flex-row space-between item-center">
                                 <div>
                                     <span class="bold">Inputs :</span>
-                                    select <a href="#" id="select-inputs-none" title="Unselect all inputs.">none</a> <a href="#" id="select-inputs-all" title="Select all inputs.">all</a>
+<!--                                    select <a href="#" id="select-inputs-none" title="Unselect all inputs.">none</a> <a href="#" id="select-inputs-all" title="Select all inputs.">all</a>-->
+                                    select:
+                                    <button id="select-inputs-none" title="Unselect all inputs.">none</button>
+                                    <button id="select-inputs-all" title="Select all inputs.">all</button>
                                 </div>
                                 <div class="text-small ml-10">
                                     (<a href="details.html" target="_blank">details</a>)
@@ -56,7 +59,10 @@
                             <div class="flex-row space-between item-center">
                                 <div>
                                     <span class="bold">Outputs :</span>
-                                    select <a href="#" id="select-outputs-none" title="Unselect all outputs.">none</a> <a href="#" id="select-outputs-all" title="Select all outputs.">all</a>
+<!--                                    select <a href="#" id="select-outputs-none" title="Unselect all outputs.">none</a> <a href="#" id="select-outputs-all" title="Select all outputs.">all</a>-->
+                                    select:
+                                    <button id="select-outputs-none" title="Unselect all outputs.">none</button>
+                                    <button id="select-outputs-all" title="Select all outputs.">all</button>
                                 </div>
                                 <div class="text-small ml-10">
                                     (<a href="details.html" target="_blank">details</a>)
@@ -341,7 +347,7 @@
                                 <input type="checkbox" id="check-hex"><label for="check-hex">default hex</label>
                             </div>
                             <div>
-                                save as <input type="text" class="message-name" id="message-any-name" title="Save the message with this name." />
+                                <button id="btSaveMessage">save</button> as <input type="search" class="message-name" id="message-any-name" title="Save the message with this name." />
                             </div>
                         </div>
                         <div></div>

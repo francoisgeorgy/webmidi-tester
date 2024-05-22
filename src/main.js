@@ -21,6 +21,11 @@ import {
 } from "./midi-messages.js";
 import {hs, hs0x, parseNumbersString} from "./utils.js";
 
+function noop() {}
+console.log = noop;
+console.warn = noop;
+console.error = noop;
+
 //=============================================================================
 //
 //-----------------------------------------------------------------------------
@@ -86,6 +91,7 @@ function onClickBtSendIDRequest() {
     sendDeviceIdRequest();
 }
 
+/*
 function onClickBtSendSysex() {
     sendSysex(parseNumbersString($("#sysex-data").val()));
     let n = $('#message-sysex-name').val() || '';
@@ -93,10 +99,10 @@ function onClickBtSendSysex() {
         saveMessage(n, parseNumbersString($("#sysex-data").val()));
         // $.localStorage.setItem(n, parseNumbersString($("#sysex-data").val()));
         displaySavedMessages();
-
         $('#message-sysex-name').val('');
     }
 }
+*/
 
 function onClickBtSendBytes() {
     const data = parseNumbersString($("#any-data").val(), isDefaultHex());
@@ -105,16 +111,30 @@ function onClickBtSendBytes() {
         return;
     }
     sendAny(data);
-    let n = $('#message-any-name').val() || '';
-    if (n.trim()) {
-        saveMessage(n, data);
-        displaySavedMessages();
-        $('#message-any-name').val('');
-    }
+    // let n = $('#message-any-name').val() || '';
+    // if (n.trim()) {
+    //     saveMessage(n, data);
+    //     displaySavedMessages();
+    //     $('#message-any-name').val('');
+    // }
 }
 
 function onClickBtClearMessages() {
     clearPorts("logentries");
+}
+
+function onClickBtSaveMessage() {
+    const data = parseNumbersString($("#any-data").val(), isDefaultHex());
+    if (data === null || data.length <= 0) {
+        // console.log("empty data; ignore command");
+        return;
+    }
+    let n = $('#message-any-name').val() || '';
+    if (n.trim()) {
+        saveMessage(n, data);
+        displaySavedMessages();
+        // $('#message-any-name').val('');
+    }
 }
 
 function selectAllInputs() {
@@ -186,6 +206,7 @@ function setupUIHandler() {
     $('#btSendIDRequest').on('click', onClickBtSendIDRequest);
     $('#btSendBytes').on('click', onClickBtSendBytes);
     $('#btClearMessages').on('click', onClickBtClearMessages);
+    $('#btSaveMessage').on('click', onClickBtSaveMessage);
     $('#select-inputs-all').on('click', selectAllInputs);
     $('#select-inputs-none').on('click', unselectAllInputs);
     $('#select-outputs-all').on('click', selectAllOutputs);
@@ -251,22 +272,23 @@ function getSavedMessage(event) {
     let name = getSavedMessageName(event);
     const m = messages.find((element) => element['name'] === name);
     if (m) {
-        return m['data'];
+        return [name, m['data']];
     } else {
         return null;
     }
 }
 
 function sendSavedMessage(event) {
-    let data = getSavedMessage(event);
+    let [name, data] = getSavedMessage(event);
     if (data) {
         sendAny(data);
     }
 }
 
 function editSavedMessage(event) {
-    let data = getSavedMessage(event);
+    let [name, data] = getSavedMessage(event);
     if (data) {
+        $("#message-any-name").val(name);
         $("#any-data").val(hs0x(data));
     }
 }
@@ -325,23 +347,30 @@ function upload() {
 }
 
 function loadfile() {
+    console.log("loadfile");
     let reader = new FileReader();
     reader.onload = (e) => {
         const file = e.target.result;
         const lines = file.split(/\r\n|\n/);
+        console.log("loadfile onload", file, lines);
         loadMessagesFromStrings(lines);
     };
     reader.onerror = (e) => alert(e.target.error.name);
+    console.log("loadfile readAsText");
     reader.readAsText(this.files[0]);
+    // clear the value to allow re-uploading the same file (same name)
+    $("#input-file")[0].value = '';
 }
 
 function loadMessagesFromStrings(strings) {
+    console.log("loadMessagesFromStrings", strings);
     const messages = [];
-    const regex = /"(.*?)" hex (.*)/
+    const regex = /"(.*?)"\s+hex\s+(.*)/
     let matches;
     for (const s of strings) {
         const found = s.trim().match(regex);
         if (found) {
+            console.log("loadMessagesFromStrings", found[1], found[2]);
             messages.push({
                 name: found[1].replace(/\\"/g, '"'),
                 data: parseNumbersString(found[2], true)
