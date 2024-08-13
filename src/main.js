@@ -8,7 +8,7 @@ import {
     inputs,
     outputs,
     saveInputsSelection,
-    saveOutputsSelection
+    saveOutputsSelection, unlisten, listen
 } from "./midi.js";
 import {
     send,
@@ -37,18 +37,6 @@ function clearPorts(elementId) {
 //=============================================================================
 // UI interaction
 //-----------------------------------------------------------------------------
-
-function onClickInputEnable(event) {
-    let id = decodeURIComponent($(event.target).data("portId"));
-    inputs[id].enabled = $(this).is(':checked');
-    saveInputsSelection();
-}
-
-function onClickOutputEnable(event) {
-    let id = decodeURIComponent($(event.target).data("portId"));
-    outputs[id].enabled = $(this).is(':checked');
-    saveOutputsSelection();
-}
 
 function onClickBtSend(event) {
     const messageMode = $(this).data('msgMode').toUpperCase();
@@ -111,12 +99,6 @@ function onClickBtSendBytes() {
         return;
     }
     sendAny(data);
-    // let n = $('#message-any-name').val() || '';
-    // if (n.trim()) {
-    //     saveMessage(n, data);
-    //     displaySavedMessages();
-    //     $('#message-any-name').val('');
-    // }
 }
 
 function onClickBtClearMessages() {
@@ -126,7 +108,6 @@ function onClickBtClearMessages() {
 function onClickBtSaveMessage() {
     const data = parseNumbersString($("#any-data").val(), isDefaultHex());
     if (data === null || data.length <= 0) {
-        // console.log("empty data; ignore command");
         return;
     }
     let n = $('#message-any-name').val() || '';
@@ -137,10 +118,31 @@ function onClickBtSaveMessage() {
     }
 }
 
+function onClickInputEnable(event) {
+    console.log("onClickInputEnable");
+    let id = decodeURIComponent($(event.target).data("portId"));
+    inputs[id].enabled = $(this).is(':checked');
+    saveInputsSelection();
+    if (inputs[id].enabled) {
+        listen(id);
+    } else {
+        unlisten(id);
+    }
+}
+
+function onClickOutputEnable(event) {
+    console.log("onClickOutputEnable");
+    let id = decodeURIComponent($(event.target).data("portId"));
+    outputs[id].enabled = $(this).is(':checked');
+    saveOutputsSelection();
+}
+
 function selectAllInputs() {
     for (const id in inputs) {
         inputs[id].enabled = true;
+        listen(id);
     }
+    saveInputsSelection();
     printInputsAndOutputs();
     return false;
 }
@@ -148,7 +150,9 @@ function selectAllInputs() {
 function unselectAllInputs() {
     for (const id in inputs) {
         inputs[id].enabled = false;
+        unlisten(id);
     }
+    saveInputsSelection();
     printInputsAndOutputs();
     return false;
 }
@@ -157,6 +161,7 @@ function selectAllOutputs() {
     for (const id in outputs) {
         outputs[id].enabled = true;
     }
+    saveOutputsSelection();
     printInputsAndOutputs();
     return false;
 }
@@ -165,6 +170,7 @@ function unselectAllOutputs() {
     for (const id in outputs) {
         outputs[id].enabled = false;
     }
+    saveOutputsSelection();
     printInputsAndOutputs();
     return false;
 }

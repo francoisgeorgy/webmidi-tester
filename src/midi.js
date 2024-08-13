@@ -7,7 +7,6 @@ const ENABLED_BY_DEFAULT = false;
  *  @typedef WebMidi.MIDIAccess
  */
 export var MIDI = null;
-
 export var inputs = {};
 export var outputs = {};
 
@@ -17,6 +16,11 @@ export var outputs = {};
 function updateInputsOutputs(event) {
 
     if (!MIDI) return;
+
+    const pref_inputs = getInputsSelection();
+    const pref_outputs = getOutputsSelection();
+
+    // console.log("updateInputsOutputs", pref_inputs, pref_outputs);
 
     //
     // INPUTS
@@ -34,6 +38,7 @@ function updateInputsOutputs(event) {
             }
             if (remove) {
                 logEvent(`remove <b>${inputLabel(id)}</b>`);
+                inputs[id].onmidimessage = null;
                 delete (inputs[id]);
             }
         }
@@ -50,9 +55,10 @@ function updateInputsOutputs(event) {
                 id: input.id,
                 name: input.name ?? '',
                 connection: input.connection,
-                enabled: ENABLED_BY_DEFAULT
+                enabled: pref_inputs.includes(input.id)
+                // enabled: ENABLED_BY_DEFAULT
             };
-            input.onmidimessage = onMidiMessage;
+            input.onmidimessage = pref_inputs.includes(input.id) ? onMidiMessage : null;
         }
     }
 
@@ -85,37 +91,54 @@ function updateInputsOutputs(event) {
                 id: output.id,
                 name: output.name ?? '',
                 connection: output.connection,
-                enabled: ENABLED_BY_DEFAULT
+                enabled: pref_outputs.includes(output.id)
+                // enabled: ENABLED_BY_DEFAULT
             };
         }
     }
 
-    autoConnectInput();
-    autoConnectOutput();
+    // autoConnectInput();
+    // autoConnectOutput();
     printInputsAndOutputs();
 }
 
-/**
- *
- */
-function autoConnectInput() {
-    for (const id of getInputsSelection()) {
-        if (id in inputs) {
-            inputs[id].enabled = true;
+export function listen(id) {
+    let port = inputById(id);
+    if (port) {
+        if (port.onmidimessage !== onMidiMessage) {
+            port.onmidimessage = onMidiMessage;
         }
+    }
+}
+
+export function unlisten(id) {
+    let port = inputById(id);
+    if (port) {
+        port.onmidimessage = null;
     }
 }
 
 /**
  *
  */
-function autoConnectOutput() {
-    for (const id of getOutputsSelection()) {
-        if (id in outputs) {
-            outputs[id].enabled = true;
-        }
-    }
-}
+// function autoConnectInput() {
+//     for (const id of getInputsSelection()) {
+//         if (id in inputs) {
+//             inputs[id].enabled = true;
+//         }
+//     }
+// }
+
+/**
+ *
+ */
+// function autoConnectOutput() {
+//     for (const id of getOutputsSelection()) {
+//         if (id in outputs) {
+//             outputs[id].enabled = true;
+//         }
+//     }
+// }
 
 /**
  *
@@ -209,6 +232,7 @@ export function onMIDIFailure(msg) {
 
 export function saveInputsSelection() {
     let a = [];
+    // console.log("saveInputsSelection", inputs);
     for (const id in inputs) {
         if (inputs[id].enabled) {
             a.push(id);
@@ -223,6 +247,7 @@ function getInputsSelection() {
 
 export function saveOutputsSelection() {
     let a = [];
+    // console.log("saveOutputsSelection", outputs);
     for (const id in outputs) {
         if (outputs[id].enabled) {
             a.push(id);
